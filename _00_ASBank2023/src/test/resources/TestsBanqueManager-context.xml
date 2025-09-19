@@ -6,20 +6,20 @@
 	<!-- * Fichier de configuration utilisé par le framework SPRING * -->
 	<!-- ************************************************************ -->
 
-	<!-- Cf http://docs.spring.io/spring/docs/current/spring-framework-reference/html/orm.html 
+	<!-- Cf http://docs.spring.io/spring/docs/current/spring-framework-reference/html/orm.html
 		pour de l'aide sur ce fichier -->
 
 	<!-- ============= DAO (Test) ============= -->
 
-	<!-- La DAO utilisée les tests. Utilise la balise <property> qui signifie 
+	<!-- La DAO utilisée les tests. Utilise la balise <property> qui signifie
 		que l'injection est faite par un setter (et non par un argument du constructeur). -->
 	<bean id="daoHibernate" class="com.iut.banque.dao.DaoHibernate"
 		scope="singleton">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<!-- La session factory utilisée les tests. Utilise Hibernate. Il est possible 
-		d'utiliser <property name="annotatedClasses"> avec une liste de classes au 
+	<!-- La session factory utilisée les tests. Utilise Hibernate. Il est possible
+		d'utiliser <property name="annotatedClasses"> avec une liste de classes au
 		lieu de <property name="packagesToScan" value="com.iut.banque.modele" /> -->
 	<bean id="sessionFactory" scope="singleton"
 		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
@@ -33,19 +33,19 @@
 		<property name="packagesToScan" value="com.iut.banque.modele" />
 	</bean>
 
-	<!-- La source de donnée utilisée pour les tests. Contient les infos de 
+	<!-- La source de donnée utilisée pour les tests. Contient les infos de
 		base de la connection -->
 	<bean id="dataSource" scope="singleton"
 		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
 		<property name="url"
-			value="jdbc:mysql://localhost:3306/bankiuttest" />
-		<property name="username" value="root" />
-		<property name="password" value="root" />
+			value="jdbc:mysql://51.38.64.145:3306/bankiutTEST?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC" />
+		<property name="username" value="debian" />
+		<property name="password" value="2401" />
 		<!-- Nécessaire, sinon les test se font quand même -->
 		<property name="defaultAutoCommit" value="false" />
 	</bean>
-	
+
 	<!-- ============= Gestion des transactions ============= -->
 
 	<!-- Le gestionnaire de transaction nécessaire pour l'annotation @Transactionnal -->
@@ -57,6 +57,6 @@
 	<bean id="banqueManager" class="com.iut.banque.facade.BanqueManager">
 		<property name="dao" ref="daoHibernate" />
 	</bean>
-	
-	
+
+
 </beans>
