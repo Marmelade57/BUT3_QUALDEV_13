@@ -1,0 +1,57 @@
+@startuml
+Compte "1" -- "0"  Utilisateur
+Client --|> Utilisateur
+abstract class Utilisateur {
+  + userId : string
+  + nom : string
+  + prenom : string
+  + adresse : string
+  + userPwd : string
+  + male : boolean
+  + type : string
+  + numClient : string <<Unique>>
+  + Utilisateur(nom: string, prenom: string, adresse: string, male: boolean, userId: string, userPwd: string)
+  + Utilisateur()
+  + setUserId(userId: string): void -> Exception
+  + toString():string
+}
+abstract class Compte {
+  + numeroCompte : string
+  + solde : double
+  # owner : Client
+  + avecDecouvert  string
+  + decouvertAutorise : float
+  + Compte(numeroCompte: string, solde: double, client: Client) -> Exception
+  + Compte()
+  - setNumeroCompte(numeroCompte: string): void -> Exception
+  + {abstract} debiter(montant: double): void -> Exception
+  + crediter(montant: double): void -> Exception
+  + getClassName(): string
+  + checkFormatNumeroCompte(s: string): boolean
+  + toString():string
+}
+class Banque {
+  - clients : Map<String, Client>
+  - gestionnaires : Map<String, Gestionnaire>
+  - accounts : Map<String, Compte>
+  + debiter(compte: Compte, montant: double): void -> Exception
+  + crediter(compte: Compte, montant: double): void -> Exception
+  + deleteUser(userId: string): void
+  + changeDecouvert(compte: CompteAvecDecouvert, nouveauDecouvert: double): void -> Exception
+}
+class Client {
+  - numeroClient: string
+  - accounts : Map<String, Compte>
+  + Client(nom: string, prenom: string, adresse: string, homme: boolean, usrId: string, usrPwd: string, numeroClient: string)
+  + Client()
+  + setUserId(userId: string): void -> Exception
+  + setNumeroClient(numeroClient: string): void -> Exception
+  + getIdentity(): string
+  + addAccount(compte: Compte)
+  + checkFormatUserIdClient(s: string): boolean
+  + checkFormatUserNumeroClient(s: string): boolean
+  + possedeComptesADecouvert(): boolean
+  + getComptesAvecSoldeNonNul(): Map<String, Compte>
+  + toString():string
+}
+@enduml
