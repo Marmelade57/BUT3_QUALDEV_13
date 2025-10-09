@@ -1,26 +1,26 @@
 @startuml
 Compte "1" -- "0"  Utilisateur
 Client --|> Utilisateur
+Gestionnaire --|> Utilisateur
+CompteAvecDecouvert --|> Compte
+CompteSansDecouvert --|> Compte
+
 abstract class Utilisateur {
-  + userId : string
-  + nom : string
-  + prenom : string
-  + adresse : string
-  + userPwd : string
-  + male : boolean
-  + type : string
-  + numClient : string <<Unique>>
+  - nom : string
+  - prenom : string
+  - adresse : string
+  - userId : string
+  - userPwd : string
+  - male : boolean
   + Utilisateur(nom: string, prenom: string, adresse: string, male: boolean, userId: string, userPwd: string)
   + Utilisateur()
   + setUserId(userId: string): void -> Exception
   + toString():string
 }
 abstract class Compte {
-  + numeroCompte : string
-  + solde : double
+  # numeroCompte : string
+  # solde : double
   # owner : Client
-  + avecDecouvert  string
-  + decouvertAutorise : float
   + Compte(numeroCompte: string, solde: double, client: Client) -> Exception
   + Compte()
   - setNumeroCompte(numeroCompte: string): void -> Exception
@@ -53,5 +53,23 @@ class Client {
   + possedeComptesADecouvert(): boolean
   + getComptesAvecSoldeNonNul(): Map<String, Compte>
   + toString():string
+}
+class Gestionnaire {
+  + Gestionnaire(nom: string, prenom: string, adresse: string, homme: boolean, usrId: string, usrPwd: string, numeroClient: string)
+  + Gestionnaire()
+  + toString():string
+}
+class CompteAvecDecouvert {
+  - decouvertAutorise: double
+  + CompteAvecDecouvert(numeroCompte: string, solde: double, decouvertAutorise: double, client: Client)
+  + CompteAvecDecouvert()
+  + debiter(montant: double)
+  + toString(): string
+}
+class CompteSansDecouvert {
+  + CompteSansDecouvert(numeroCompte: string, solde: double, decouvertAutorise: double, client: Client)
+  + CompteSansDecouvert()
+  + debiter(montant: double)
+  + toString(): string
 }
 @enduml
