@@ -52,4 +52,6 @@ replay_pid*
 /.nb-gradle/
 
 # 
-../fichiersMx/
+.idea
+_00_ASBank2025/apache-tomcat-9.0.109/
+./_
