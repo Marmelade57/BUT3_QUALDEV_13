@@ -72,7 +72,7 @@ public abstract class Utilisateur {
 	/**
 	 * @return String, le nom de l'utilisateur.
 	 */
-	public String getNom() {
+	protected String getNom() {
 		return nom;
 	}
 
@@ -80,14 +80,14 @@ public abstract class Utilisateur {
 	 * @param nom
 	 *            : le nom de l'utilisateur
 	 */
-	public void setNom(String nom) {
+	protected void setNom(String nom) {
 		this.nom = nom;
 	}
 
 	/**
 	 * @return String, le prénom de l'utilisateur
 	 */
-	public String getPrenom() {
+	protected String getPrenom() {
 		return prenom;
 	}
 
@@ -95,14 +95,14 @@ public abstract class Utilisateur {
 	 * @param prenom
 	 *            : le prénom de l'utilisateur
 	 */
-	public void setPrenom(String prenom) {
+	protected void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
 
 	/**
 	 * @return String, l'adresse physique de l'utilisateur
 	 */
-	public String getAdresse() {
+	protected String getAdresse() {
 		return adresse;
 	}
 
@@ -110,14 +110,14 @@ public abstract class Utilisateur {
 	 * @param adresse
 	 *            : l'adresse physique de l'utilisateur
 	 */
-	public void setAdresse(String adresse) {
+	protected void setAdresse(String adresse) {
 		this.adresse = adresse;
 	}
 
 	/**
 	 * @return male : vrai si l'utilisateur est un homme, faux sinon
 	 */
-	public boolean isMale() {
+	protected boolean isMale() {
 		return male;
 	}
 
@@ -125,14 +125,14 @@ public abstract class Utilisateur {
 	 * @param male
 	 *            : vrai si l'utilisateur est un homme, faux sinon
 	 */
-	public void setMale(boolean male) {
+	protected void setMale(boolean male) {
 		this.male = male;
 	}
 
 	/**
 	 * @return userId : l'identifiant de l'utilisateur
 	 */
-	public String getUserId() {
+	protected String getUserId() {
 		return userId;
 	}
 
@@ -141,14 +141,17 @@ public abstract class Utilisateur {
 	 *            : l'identifiant de l'utilisateur
 	 * @throws IllegalFormatException
 	 */
-	public void setUserId(String userId) throws IllegalFormatException {
-		this.userId = userId;
-	}
+    protected void setUserId(String userId) throws IllegalFormatException {
+        if (!userId.matches("^[a-z]\\.[a-z]+\\d+$")) {
+            throw new IllegalFormatException("Invalid userId format: " + userId);
+        }
+        this.userId = userId;
+    }
 
 	/**
 	 * @return userPwd : le mot de passe de l'utilisateur
 	 */
-	public String getUserPwd() {
+	protected String getUserPwd() {
 		return userPwd;
 	}
 
@@ -156,7 +159,7 @@ public abstract class Utilisateur {
 	 * @param userPwd
 	 *            : le mot de passe de l'utilisateur
 	 */
-	public void setUserPwd(String userPwd) {
+	protected void setUserPwd(String userPwd) {
 		this.userPwd = userPwd;
 	}
 
@@ -174,7 +177,7 @@ public abstract class Utilisateur {
 	 * @param userId
 	 * @param userPwd
 	 */
-	public Utilisateur(String nom, String prenom, String adresse, boolean male, String userId, String userPwd) {
+	protected Utilisateur(String nom, String prenom, String adresse, boolean male, String userId, String userPwd) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
@@ -192,7 +195,7 @@ public abstract class Utilisateur {
 	 * Il est préférable d'utiliser une classe implémentant IDao pour créer un
 	 * objet au lieu d'appeler ce constructeur.
 	 */
-	public Utilisateur() {
+	protected Utilisateur() {
 		super();
 	}
 
