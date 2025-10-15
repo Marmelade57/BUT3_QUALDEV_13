@@ -1,6 +1,7 @@
 package com.iut.banque.converter;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.apache.struts2.util.StrutsTypeConverter;
 
@@ -20,6 +21,7 @@ import com.iut.banque.modele.Client;
  * Client.
  */
 public class ClientConverter extends StrutsTypeConverter {
+    Logger logger = Logger.getLogger(getClass().getName());
 
 	/**
 	 * DAO utilisée pour récuperer les objets correspondants à l'id passé en
@@ -37,22 +39,19 @@ public class ClientConverter extends StrutsTypeConverter {
 	 * 
 	 * Utilisé pour l'injection de dépendance.
 	 * 
-	 * @param dao
+	 * @param dao = ClientConverter.dao
 	 */
 	public ClientConverter(IDao dao) {
-		System.out.println("=========================");
-		System.out.println("Création du convertisseur de client");
-		ClientConverter.dao = dao;
-		// System.out.println("DAO injectée : " + dao);
+		logger.info("=========================");
+        logger.info("Création du convertisseur de client");
 	}
 
 	/**
 	 * Constructeur sans paramêtre pour le ClientConverter
 	 */
 	public ClientConverter() {
-		System.out.println("=========================");
-		System.out.println("Création du convertisseur de client");
-		// System.out.println("DAO : " + dao);
+		logger.info("=========================");
+		logger.info("Création du convertisseur de client");
 	}
 
 	/**

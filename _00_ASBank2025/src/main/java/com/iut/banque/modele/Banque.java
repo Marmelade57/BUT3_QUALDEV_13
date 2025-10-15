@@ -12,8 +12,9 @@ public class Banque {
 	private Map<String, Gestionnaire> gestionnaires;
 	private Map<String, Compte> accounts;
 
-	public Banque() {
-	}
+    public void banque() {
+        //
+    }
 
 	/**
 	 * Getter du map de clients
