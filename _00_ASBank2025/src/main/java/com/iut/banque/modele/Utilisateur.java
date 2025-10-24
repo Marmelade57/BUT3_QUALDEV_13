@@ -72,7 +72,7 @@ public abstract class Utilisateur {
 	/**
 	 * @return String, le nom de l'utilisateur.
 	 */
-	protected String getNom() {
+	public String getNom() {
 		return nom;
 	}
 
@@ -87,7 +87,7 @@ public abstract class Utilisateur {
 	/**
 	 * @return String, le prénom de l'utilisateur
 	 */
-	protected String getPrenom() {
+	public String getPrenom() {
 		return prenom;
 	}
 
@@ -102,7 +102,7 @@ public abstract class Utilisateur {
 	/**
 	 * @return String, l'adresse physique de l'utilisateur
 	 */
-	protected String getAdresse() {
+	public String getAdresse() {
 		return adresse;
 	}
 
@@ -117,7 +117,7 @@ public abstract class Utilisateur {
 	/**
 	 * @return male : vrai si l'utilisateur est un homme, faux sinon
 	 */
-	protected boolean isMale() {
+	public boolean isMale() {
 		return male;
 	}
 
@@ -132,7 +132,7 @@ public abstract class Utilisateur {
 	/**
 	 * @return userId : l'identifiant de l'utilisateur
 	 */
-	protected String getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
@@ -151,7 +151,7 @@ public abstract class Utilisateur {
 	/**
 	 * @return userPwd : le mot de passe de l'utilisateur
 	 */
-	protected String getUserPwd() {
+	public String getUserPwd() {
 		return userPwd;
 	}
 
