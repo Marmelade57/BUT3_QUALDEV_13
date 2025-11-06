@@ -19,7 +19,7 @@ ___
 ## Tests
 
 ___
-Après le sprint numéro 1 le nombre de test de notre application est passé de à tests.
+Après le sprint numéro 1 le nombre de test de notre application est passé de **78** à **86** tests.
 
 ___
 ## Fonctionnalités demandées

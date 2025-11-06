@@ -23,8 +23,8 @@ ___
 
 ___
 
-Après le sprint numéro 2 le nombre de test de notre application est passé de à tests.
-
+Après le sprint numéro 2 le nombre de test de notre application est passé de **86** à **92** tests.
+<img src="tests.png" alt="preuve des tests" />
 ___
 ## Fonctionnalités demandées :
 
