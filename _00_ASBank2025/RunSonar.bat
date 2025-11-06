@@ -27,7 +27,7 @@ if not exist target\site\jacoco\jacoco.xml (
 )
 
 rem 2) Analyse SonarCloud
-call mvn -B sonar:sonar -Dsonar.projectKey=%SONAR_PROJECT_KEY% -Dsonar.organization=%SONAR_ORG% -Dsonar.host.url=%SONAR_HOST% -Dsonar.login=%SONAR_TOKEN% -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
+call mvn -B sonar:sonar -Dsonar.projectKey=%SONAR_PROJECT_KEY% -Dsonar.organization=%SONAR_ORG% -Dsonar.host.url=%SONAR_HOST% -Dsonar.token=%SONAR_TOKEN% -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
 
 endlocal
 @echo off
