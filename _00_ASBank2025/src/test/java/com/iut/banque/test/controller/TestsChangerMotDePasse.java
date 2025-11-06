@@ -7,14 +7,32 @@ import com.iut.banque.modele.Client;
 import com.iut.banque.modele.Utilisateur;
 import org.junit.Before;
 import org.junit.Test;
+import com.iut.banque.exceptions.IllegalFormatException;
+
+import com.opensymphony.xwork2.ActionContext;
+import org.apache.struts2.StrutsJUnit4TestCase;
+import org.apache.struts2.dispatcher.mapper.ActionMapping;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.mock.web.MockServletContext;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
+import org.apache.struts2.StrutsStatics;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests pour la classe ChangerMotDePasse.
  * Utilise une classe mock interne pour isoler le contrôleur de ses dépendances.
  */
-public class TestsChangerMotDePasse {
+@RunWith(MockitoJUnitRunner.class)
+public class TestsChangerMotDePasse extends StrutsJUnit4TestCase<ChangerMotDePasse> {
 
 	private ChangerMotDePasse changerMotDePasse;
 	private MockBanqueFacade banqueFacadeMock;
@@ -71,19 +89,47 @@ public class TestsChangerMotDePasse {
 	}
 
 	@Before
-	public void setUp() {
-		changerMotDePasse = new ChangerMotDePasse();
-		banqueFacadeMock = new MockBanqueFacade();
-		utilisateurMock = new Client("Doe", "John", "123 rue Test", true, "test.user", "password123", "123456789");
-
-		// Utiliser la réflexion pour injecter le mock
+	public void setUp() throws Exception {
 		try {
-			java.lang.reflect.Field field = ChangerMotDePasse.class.getDeclaredField("banque");
-			field.setAccessible(true);
-			field.set(changerMotDePasse, banqueFacadeMock);
+			super.setUp();
 		} catch (Exception e) {
-			fail("Impossible d'injecter le mock de BanqueFacade : " + e.getMessage());
+			// Ignorer les erreurs d'initialisation de StrutsJUnit4TestCase
 		}
+		
+		// Initialiser le contexte Struts2
+		Map<String, Object> session = new HashMap<>();
+		Map<String, Object> application = new HashMap<>();
+		ServletContext servletContext = new MockServletContext();
+		
+		// Créer un nouveau contexte avec les maps nécessaires
+		ActionContext context = new ActionContext(new HashMap<>());
+		context.setSession(session);
+		context.setApplication(application);
+		
+		// Créer des mocks pour les objets de requête et de réponse
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		
+		// Configurer le contexte avec les mocks
+		context.put(StrutsStatics.HTTP_REQUEST, request);
+		context.put(StrutsStatics.HTTP_RESPONSE, response);
+		context.put(StrutsStatics.SERVLET_CONTEXT, servletContext);
+		
+		// Définir le nouveau contexte
+		ActionContext.setContext(context);
+
+		// Initialiser les mocks
+		banqueFacadeMock = new MockBanqueFacade();
+		try {
+			// Format attendu pour l'identifiant : "a.dupont1" (lettre.petitnomchiffre)
+			// Expression régulière : [a-z]\.[a-z]+[1-9]\d*
+			utilisateurMock = new Client("Doe", "John", "123 rue Test", true, "j.doe1", "password123", "1234567890");
+		} catch (IllegalArgumentException | IllegalFormatException e) {
+			throw new RuntimeException("Erreur lors de la création du client de test : " + e.getMessage(), e);
+		}
+
+		// Créer une instance de ChangerMotDePasse avec le mock de BanqueFacade
+		changerMotDePasse = new ChangerMotDePasse(banqueFacadeMock);
 	}
 
 	@Test

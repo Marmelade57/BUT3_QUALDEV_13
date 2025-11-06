@@ -29,6 +29,14 @@ public class ChangerMotDePasse extends ActionSupport {
 				.getRequiredWebApplicationContext(ServletActionContext.getServletContext());
 		this.banque = (BanqueFacade) context.getBean("banqueFacade");
 	}
+	
+	/**
+	 * Constructeur alternatif pour les tests unitaires
+	 * @param banque La façade à utiliser pour ce contrôleur
+	 */
+	public ChangerMotDePasse(BanqueFacade banque) {
+		this.banque = banque;
+	}
 
 	/**
 	 * Méthode pour afficher la page de changement de mot de passe

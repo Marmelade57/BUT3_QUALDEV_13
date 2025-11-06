@@ -10,9 +10,30 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.release>8</maven.compiler.release>
-        <!-- Evite que ${argLine} soit passé tel quel quand le profil coverage n'est pas activé -->
-        <argLine></argLine>
-        <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        
+        <!-- Configuration JaCoCo -->
+        <jacoco.version>0.8.12</jacoco.version>
+        
+        <!-- Configuration SonarQube -->
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.language>java</sonar.language>
+        <sonar.java.binaries>${project.build.directory}/classes</sonar.java.binaries>
+        <sonar.java.libraries>${project.build.directory}/**/*.jar</sonar.java.libraries>
+        <sonar.sources>src/main/java</sonar.sources>
+        <sonar.tests>src/test/java</sonar.tests>
+        <sonar.test.inclusions>src/test/**/*</sonar.test.inclusions>
+        
+        <!-- Configuration JaCoCo pour SonarQube -->
+        <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        
+        <!-- Suppression des propriétés obsolètes -->
+        <!-- 
+          Les propriétés suivantes ont été supprimées car obsolètes dans les versions récentes de SonarQube :
+          - sonar.jacoco.reportPaths
+          - sonar.jacoco.itReportPath
+          
+          Utilisez plutôt le rapport XML généré par JaCoCo (défini ci-dessus)
+        -->
     </properties>
     <build>
         <resources>
@@ -44,7 +65,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <argLine> ${argLine} --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/sun.reflect.generics.reflectiveObjects=ALL-UNNAMED --add-opens java.base/sun.security.x509=ALL-UNNAMED </argLine>
+                    <argLine>${argLine} --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.base/sun.reflect.generics.reflectiveObjects=ALL-UNNAMED --add-opens java.base/sun.security.x509=ALL-UNNAMED</argLine>
                 </configuration>
             </plugin>
             <!--  WAR plugin  -->
@@ -74,7 +95,11 @@
         </plugins>
     </build>
     <dependencies>
-        <!--  SLF4J 1.7 pour le projet  -->
+        <!-- ============================ -->
+        <!-- Dépendances principales      -->
+        <!-- ============================ -->
+        
+        <!-- === Logging === -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -85,11 +110,13 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.36</version>
         </dependency>
-        <!--  Hibernate  -->
+        
+        <!-- === Base de données === -->
+        <!-- Hibernate ORM -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.1.17.Final</version>
+            <version>5.6.15.Final</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -97,11 +124,20 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!--  Spring  -->
+        
+        <!-- Hibernate EntityManager -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.6.15.Final</version>
+        </dependency>
+        
+        
+        <!-- === Spring Framework === -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>4.2.6.RELEASE</version>
+            <version>4.3.30.RELEASE</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -112,7 +148,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>4.2.6.RELEASE</version>
+            <version>4.3.30.RELEASE</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -123,32 +159,92 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>4.2.6.RELEASE</version>
+            <version>4.3.30.RELEASE</version>
         </dependency>
+        
+        <!-- Spring Test -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>4.2.6.RELEASE</version>
+            <version>4.3.30.RELEASE</version>
             <scope>test</scope>
         </dependency>
-        <!--  Struts  -->
+        
+        <!-- === Struts2 Framework === -->
         <dependency>
             <groupId>org.apache.struts</groupId>
             <artifactId>struts2-core</artifactId>
             <version>2.3.37</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.freemarker</groupId>
+                    <artifactId>freemarker</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.struts.xwork</groupId>
+                    <artifactId>xwork-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        <!--  Autres dépendances  -->
+        
+        <!-- XWork Core (nécessaire pour Struts 2) -->
+        <dependency>
+            <groupId>org.apache.struts.xwork</groupId>
+            <artifactId>xwork-core</artifactId>
+            <version>2.3.37</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.struts</groupId>
+            <artifactId>struts2-junit-plugin</artifactId>
+            <version>2.3.37</version>
+            <scope>test</scope>
+        </dependency>
+        
+        
+        
+        
+        <!-- JUnit 4 pour les tests -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- Mockito pour les tests -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>3.12.4</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- Mockito JUnit Runner -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>3.12.4</version>
+            <scope>test</scope>
+        </dependency>
+        
+        
+        <!-- ============================ -->
+        <!-- Autres dépendances           -->
+        <!-- ============================ -->
+        
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
         </dependency>
+        
+        <!-- JPA API -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>2.2</version>
         </dependency>
+        
         <dependency>
             <groupId>commons-pool</groupId>
             <artifactId>commons-pool</artifactId>
@@ -175,43 +271,72 @@
             <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
+        <!-- JAXB API (Java EE 8) -->
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.2.11</version>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>2.3.3</version>
         </dependency>
+        <!-- JAXB Runtime (Java 11+ compatible) -->
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-core</artifactId>
-            <version>2.2.11</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-impl</artifactId>
-            <version>2.2.11</version>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.3.3</version>
         </dependency>
         <dependency>
             <groupId>javax.activation</groupId>
             <artifactId>activation</artifactId>
             <version>1.1.1</version>
         </dependency>
+        
+        <!-- JSP API pour les tests -->
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.2</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- Base de données H2 pour les tests -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <!--  Profil Sonar avec SLF4J 2.x  -->
     <profiles>
         <profile>
             <id>coverage</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.8.12</version>
+                        <version>${jacoco.version}</version>
+                        <configuration>
+                            <destFile>${basedir}/target/coverage-reports/jacoco-unit.exec</destFile>
+                            <dataFile>${basedir}/target/coverage-reports/jacoco-unit.exec</dataFile>
+                            <output>file</output>
+                            <append>true</append>
+                            <excludes>
+                                <exclude>**/model/*.class</exclude>
+                            </excludes>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>prepare-agent</id>
                                 <goals>
                                     <goal>prepare-agent</goal>
                                 </goals>
+                                <configuration>
+                                    <destFile>${project.build.directory}/jacoco.exec</destFile>
+                                    <propertyName>argLine</propertyName>
+                                </configuration>
                             </execution>
                             <execution>
                                 <id>report</id>
@@ -220,8 +345,11 @@
                                     <goal>report</goal>
                                 </goals>
                                 <configuration>
+                                    <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+                                    <outputDirectory>${project.build.directory}/site/jacoco</outputDirectory>
                                     <formats>
                                         <format>XML</format>
+                                        <format>HTML</format>
                                     </formats>
                                 </configuration>
                             </execution>
