@@ -32,18 +32,12 @@ public class ColorGameBean {
         // background = "yellow";
         // foreground = "red";
 
-        if (! color1.equals(foreground)) {
-            if (color1.equalsIgnoreCase("black") ||
-                        color1.equalsIgnoreCase("cyan")) {
-                        background = color1;
-                }
+        if (! color1.equals(foreground) && (color1.equalsIgnoreCase("black") || color1.equalsIgnoreCase("cyan"))) {
+            background = color1;
         }
 
-        if (! color2.equals(background)) {
-            if (color2.equalsIgnoreCase("black") ||
-                        color2.equalsIgnoreCase("cyan")) {
-                        foreground = color2;
-            }
+        if (! color2.equals(background) && (color2.equalsIgnoreCase("black") || color2.equalsIgnoreCase("cyan"))) {
+            foreground = color2;
         }
 
         attempts++;

@@ -111,7 +111,7 @@ public class CompressionFilter extends GenericFilter {
 
             while (st.hasMoreTokens()) {
                 String token = st.nextToken().trim();
-                if (token.length() > 0) {
+                if (! token.isEmpty()) { // token.length() > 0 &&
                     values.add(token);
                 }
             }

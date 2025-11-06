@@ -40,7 +40,7 @@ public final class HTMLFilter {
             return null;
         }
 
-        char content[] = new char[message.length()];
+        char[] content = new char[message.length()];
         message.getChars(0, message.length(), content, 0);
         StringBuilder result = new StringBuilder(content.length + 50);
         for (char c : content) {

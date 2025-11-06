@@ -275,7 +275,7 @@ public class CompressionServletResponseWrapper
     public void addHeader(String name, String value) {
         if (headerCopies.containsKey(name)) {
             String existingValue = headerCopies.get(name);
-            if ((existingValue != null) && (existingValue.length() > 0)) {
+            if ((existingValue != null) && (existingValue.isEmpty())) {
                 headerCopies.put(name, existingValue + "," + value);
             } else {
                 headerCopies.put(name, value);

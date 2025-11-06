@@ -105,7 +105,7 @@ public class JspCalendar {
         return calendar.get(Calendar.SECOND);
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         JspCalendar db = new JspCalendar();
         p("date: " + db.getDayOfMonth());
         p("year: " + db.getYear());

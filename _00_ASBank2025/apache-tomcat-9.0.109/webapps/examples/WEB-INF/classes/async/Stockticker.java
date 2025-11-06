@@ -65,19 +65,15 @@ public class Stockticker implements Runnable {
         }
 
         public void addTickListener(TickListener listener) {
-            if (listeners.add(listener)) {
-                if (counter.incrementAndGet()==1) {
-                    start();
-                }
+            if (listeners.add(listener) && counter.incrementAndGet()==1) {
+                start();
             }
 
         }
 
         public void removeTickListener(TickListener listener) {
-            if (listeners.remove(listener)) {
-                if (counter.decrementAndGet()==0) {
-                    stop();
-                }
+            if (listeners.remove(listener) && counter.decrementAndGet()==0) {
+                stop();
             }
         }
 

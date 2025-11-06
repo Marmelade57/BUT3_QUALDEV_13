@@ -224,7 +224,7 @@ public final class Room {
         assert removed;
 
         // If the last player left the Room, we need to cancel the Broadcast Timer Task.
-        if (players.size() == 0) {
+        if (players.isEmpty()) { // players.size() == 0
             // Cancel the task.
             // Note that it can happen that the TimerTask is just about to execute (from
             // the Timer thread) but waits until all players are gone (or even until a new

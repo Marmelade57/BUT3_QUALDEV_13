@@ -16,7 +16,8 @@
 --%>
 <%@ taglib prefix="my" uri="http://tomcat.apache.org/jsp2-example-taglib"%>
 
-<html>
+<!DOCTYPE>
+<html lang="en">
   <head>
     <title>JSP 2.0 Examples - Shuffle Example</title>
   </head>

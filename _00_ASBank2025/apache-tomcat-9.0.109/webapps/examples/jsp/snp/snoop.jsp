@@ -14,8 +14,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
-<html>
-<body bgcolor="white">
+<!DOCTYPE>
+<html lang="en">
+<head>
+    <title></title>
+</head>
+
+<body style="background-color: white">
 <h1> Request Information </h1>
 <font size="4">
 JSP Request Method: <%= util.HTMLFilter.filter(request.getMethod()) %>

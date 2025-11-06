@@ -106,10 +106,8 @@ public class DetailCompte extends ActionSupport {
 	public Compte getCompte() {
 		if (banque.getConnectedUser() instanceof Gestionnaire) {
 			return compte;
-		} else if (banque.getConnectedUser() instanceof Client) {
-			if (((Client) banque.getConnectedUser()).getAccounts().containsKey(compte.getNumeroCompte())) {
-				return compte;
-			}
+		} else if (banque.getConnectedUser() instanceof Client && ((Client) banque.getConnectedUser()).getAccounts().containsKey(compte.getNumeroCompte())) {
+			return compte;
 		}
 		return null;
 	}

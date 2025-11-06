@@ -265,7 +265,7 @@ public class CompressionResponseStream extends ServletOutputStream {
      * @exception IOException if an input/output error occurs
      */
     @Override
-    public void write(byte b[]) throws IOException {
+    public void write(byte[] b) throws IOException {
 
         write(b, 0, b.length);
 
@@ -304,7 +304,7 @@ public class CompressionResponseStream extends ServletOutputStream {
      * @exception IOException if an input/output error occurs
      */
     @Override
-    public void write(byte b[], int off, int len) throws IOException {
+    public void write(byte[] b, int off, int len) throws IOException {
 
         if (debug > 1) {
             System.out.println("write, bufferCount = " + bufferCount + " len = " + len + " off = " + off);
@@ -344,7 +344,7 @@ public class CompressionResponseStream extends ServletOutputStream {
         writeToGZip(b, off, len);
     }
 
-    public void writeToGZip(byte b[], int off, int len) throws IOException {
+    public void writeToGZip(byte[] b, int off, int len) throws IOException {
 
         if (debug > 1) {
             System.out.println("writeToGZip, len = " + len);
@@ -434,7 +434,7 @@ public class CompressionResponseStream extends ServletOutputStream {
      * @param sArray the StringArray
      * @param value string
      */
-    private boolean startsWithStringArray(String sArray[], String value) {
+    private boolean startsWithStringArray(String[] sArray, String value) {
         if (value == null) {
             return false;
         }

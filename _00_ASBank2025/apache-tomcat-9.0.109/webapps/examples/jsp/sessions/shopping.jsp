@@ -15,13 +15,13 @@
   limitations under the License.
 --%>
 <%@ page import="sessions.Item" %>
-<html>
+<!DOCTYPE>
+<html lang="en">
 <head>
 <title>Shopping Cart Example</title>
 </head>
 
-<body bgcolor="white">
-<font size = 5 color="#CC0000">
+<body style="background-color: white; font-size: 5em; color: #cc0000">
 
 <form type=POST action=carts.jsp>
 <br>

@@ -34,9 +34,15 @@ import java.awt.geom.Rectangle2D;
 public final class DrawMessage {
 
     private int type;
-    private byte colorR, colorG, colorB, colorA;
+    private byte colorR;
+    private byte colorG;
+    private byte colorB;
+    private byte colorA;
     private double thickness;
-    private double x1, y1, x2, y2;
+    private double x1;
+    private double y1;
+    private double x2;
+    private double y2;
 
     /**
      * The type.
@@ -149,8 +155,10 @@ public final class DrawMessage {
             g.draw(line);
 
         } else if (type == 3 || type == 4) {
-            double x1 = this.x1, x2 = this.x2,
-                    y1 = this.y1, y2 = this.y2;
+            double x1 = this.x1;
+            double x1 = x2 = this.x2;
+            double x1 = y1 = this.y1;
+            double x1 = y2 = this.y2;
             if (x1 > x2) {
                 x1 = this.x2;
                 x2 = this.x1;
@@ -229,11 +237,9 @@ public final class DrawMessage {
             throw new ParseException(ex);
         }
 
-        DrawMessage m = new DrawMessage(type, colors[0], colors[1],
+        return new DrawMessage(type, colors[0], colors[1],
                 colors[2], colors[3], thickness, coords[0], coords[2],
                 coords[1], coords[3]);
-
-        return m;
     }
 
     public static class ParseException extends Exception {
