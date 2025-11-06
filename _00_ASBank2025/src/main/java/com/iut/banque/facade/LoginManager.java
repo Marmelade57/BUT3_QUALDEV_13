@@ -1,6 +1,9 @@
 package com.iut.banque.facade;
 
 import com.iut.banque.constants.LoginConstants;
+import com.iut.banque.controller.HashMotDePasse;
+import com.iut.banque.controller.HashMotDePasse.HashResult;
+import com.iut.banque.exceptions.TechnicalException;
 import com.iut.banque.interfaces.IDao;
 import com.iut.banque.modele.Gestionnaire;
 import com.iut.banque.modele.Utilisateur;
@@ -77,5 +80,57 @@ public class LoginManager {
 	public void logout() {
 		this.user = null;
 		dao.disconnect();
+	}
+
+	/**
+	 * Méthode pour changer le mot de passe de l'utilisateur connecté.
+	 * Le nouveau mot de passe sera hashé avec PBKDF2 avant d'être stocké.
+	 * 
+	 * @param ancienMotDePasse
+	 *            : String correspondant à l'ancien mot de passe pour vérification
+	 * @param nouveauMotDePasse
+	 *            : String correspondant au nouveau mot de passe (sera hashé)
+	 * @throws TechnicalException
+	 *             si l'utilisateur n'est pas connecté ou si l'ancien mot de passe est incorrect
+	 */
+	public void changerMotDePasse(String ancienMotDePasse, String nouveauMotDePasse) throws TechnicalException {
+		if (user == null) {
+			throw new TechnicalException("Aucun utilisateur connecté");
+		}
+
+		// Vérifier que l'ancien mot de passe est correct
+		if (!verifierMotDePasse(ancienMotDePasse, user)) {
+			throw new TechnicalException("L'ancien mot de passe est incorrect");
+		}
+
+		// Hasher le nouveau mot de passe
+		HashMotDePasse hashMotDePasse = new HashMotDePasse();
+		HashResult hashResult = hashMotDePasse.hashPassword(nouveauMotDePasse);
+
+		// Stocker le sel et le hash au format "salt:hash"
+		user.setHashedPassword(hashResult.saltBase64, hashResult.hashBase64);
+		dao.updateUser(user);
+	}
+
+	/**
+	 * Vérifie si un mot de passe correspond à celui stocké pour l'utilisateur.
+	 * Gère à la fois les mots de passe hashés et en clair (rétrocompatibilité).
+	 * 
+	 * @param motDePasse
+	 *            : le mot de passe à vérifier
+	 * @param utilisateur
+	 *            : l'utilisateur dont on veut vérifier le mot de passe
+	 * @return true si le mot de passe est correct, false sinon
+	 */
+	private boolean verifierMotDePasse(String motDePasse, Utilisateur utilisateur) {
+		if (utilisateur.isPasswordHashed()) {
+			// Mot de passe hashé : utiliser verifyPassword
+			HashMotDePasse hashMotDePasse = new HashMotDePasse();
+			return hashMotDePasse.verifyPassword(motDePasse, utilisateur.getPasswordSalt(),
+					utilisateur.getPasswordHash());
+		} else {
+			// Mot de passe en clair (ancien format) : comparaison directe
+			return motDePasse.equals(utilisateur.getUserPwd());
+		}
 	}
 }

@@ -26,7 +26,7 @@ public class HashMotDePasse {
         return salt;
     }
 
-    protected HashResult hashPassword(String motDePasse) {
+    public HashResult hashPassword(String motDePasse) {
         if (motDePasse == null || motDePasse.isEmpty()) {
             throw new IllegalArgumentException("Le mot de passe doit être une chaîne non vide");
         }
@@ -56,7 +56,7 @@ public class HashMotDePasse {
     /**
      * Verifies whether a password matches the stored hash using the same salt.
      */
-    protected boolean verifyPassword(String motDePasse, String storedSaltBase64, String storedHashBase64) {
+    public boolean verifyPassword(String motDePasse, String storedSaltBase64, String storedHashBase64) {
         if (motDePasse == null || storedSaltBase64 == null || storedHashBase64 == null) {
             return false;
         }

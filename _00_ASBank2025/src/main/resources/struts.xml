@@ -297,5 +297,23 @@
 			<result>/JSP/CreerUtilisateur.jsp</result>
 		</action>
 
+		<!-- Changement de mot de passe pour utilisateur connecté -->
+		<action name="urlChangerMotDePasse" class="com.iut.banque.controller.ChangerMotDePasse">
+			<result name="SUCCESS">/JSP/ChangerMotDePasse.jsp</result>
+			<result name="ERROR">/JSP/ChangerMotDePasse.jsp</result>
+		</action>
+
+		<action name="changerMotDePasseAction" class="com.iut.banque.controller.ChangerMotDePasse"
+			method="changerMotDePasse">
+			<result name="SUCCESS" type="redirectAction">
+				<param name="actionName">urlChangerMotDePasse</param>
+				<param name="message">%{message}</param>
+			</result>
+			<result name="ERROR" type="redirectAction">
+				<param name="actionName">urlChangerMotDePasse</param>
+				<param name="message">%{message}</param>
+			</result>
+		</action>
+
 	</package>
 </struts>

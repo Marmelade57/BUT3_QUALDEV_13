@@ -47,8 +47,10 @@ public class OublieMotDePasse {
             return false; // Token invalide ou inexistant
         }
 
-        if (nouveauMotDePasse == null || nouveauMotDePasse.length() < 8) {
-            return false; // Mot de passe trop court
+        // Utiliser la classe utilitaire pour la validation
+        String erreurValidation = ValidationMotDePasse.validerMotDePasse(nouveauMotDePasse);
+        if (erreurValidation != null) {
+            return false; // Mot de passe invalide
         }
 
         // Simuler la mise à jour du mot de passe (à connecter à la base plus tard)

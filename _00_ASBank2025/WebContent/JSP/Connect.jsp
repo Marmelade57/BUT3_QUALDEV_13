@@ -20,6 +20,10 @@
 		Bienvenue <b><s:property value="connectedUser.prenom" /> <s:property
 				value="connectedUser.nom" /></b> !
 	</p>
+	<p>
+		<s:url action="urlChangerMotDePasse" var="urlChangerMotDePasse" />
+		<s:a href="%{urlChangerMotDePasse}">Changer mon mot de passe</s:a>
+	</p>
 	<p>Voici l'état de vos comptes :</p>
 	<table>
 		<tr>

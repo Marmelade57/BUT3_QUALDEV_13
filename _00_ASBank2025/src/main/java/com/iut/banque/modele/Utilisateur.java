@@ -164,6 +164,65 @@ public abstract class Utilisateur {
 	}
 
 	/**
+	 * Méthode publique pour changer le mot de passe de l'utilisateur.
+	 * 
+	 * @param nouveauMotDePasse
+	 *            : le nouveau mot de passe (sera hashé)
+	 */
+	public void changerMotDePasse(String nouveauMotDePasse) {
+		this.userPwd = nouveauMotDePasse;
+	}
+
+	/**
+	 * Détermine si le mot de passe stocké est au format hashé (salt:hash).
+	 * 
+	 * @return true si le format est hashé, false sinon (mot de passe en clair)
+	 */
+	public boolean isPasswordHashed() {
+		if (userPwd == null) {
+			return false;
+		}
+		// Format hashé : "saltBase64:hashBase64"
+		return userPwd.contains(":") && userPwd.split(":").length == 2;
+	}
+
+	/**
+	 * Récupère le sel du mot de passe hashé.
+	 * 
+	 * @return le sel en Base64, ou null si le mot de passe n'est pas hashé
+	 */
+	public String getPasswordSalt() {
+		if (!isPasswordHashed()) {
+			return null;
+		}
+		return userPwd.split(":")[0];
+	}
+
+	/**
+	 * Récupère le hash du mot de passe.
+	 * 
+	 * @return le hash en Base64, ou null si le mot de passe n'est pas hashé
+	 */
+	public String getPasswordHash() {
+		if (!isPasswordHashed()) {
+			return null;
+		}
+		return userPwd.split(":")[1];
+	}
+
+	/**
+	 * Définit le mot de passe au format hashé (salt:hash).
+	 * 
+	 * @param saltBase64
+	 *            : le sel en Base64
+	 * @param hashBase64
+	 *            : le hash en Base64
+	 */
+	public void setHashedPassword(String saltBase64, String hashBase64) {
+		this.userPwd = saltBase64 + ":" + hashBase64;
+	}
+
+	/**
 	 * Constructeur de Utilisateur avec tous les champs de la classe comme
 	 * paramètres.
 	 * 

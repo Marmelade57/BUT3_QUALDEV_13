@@ -19,6 +19,10 @@
 	<p>Bienvenue <b><s:property value="connectedUser.prenom" /> <s:property value="connectedUser.nom" /></b> !</p>
 	<p>Que voulez vous faire ?</p>
 	<p>
+		<s:url action="urlChangerMotDePasse" var="urlChangerMotDePasse" />
+		<s:a href="%{urlChangerMotDePasse}">Changer mon mot de passe</s:a>
+	</p>
+	<p>
 		<s:url action="listeCompteManager" var="urlListeCompteManager" >
 			<s:param name="aDecouvert">false</s:param>
 		</s:url>

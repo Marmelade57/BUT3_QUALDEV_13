@@ -275,4 +275,18 @@ public class BanqueFacade {
 			banqueManager.changeDecouvert(compte, nouveauDecouvert);
 		}
 	}
+
+	/**
+	 * Méthode pour changer le mot de passe de l'utilisateur connecté.
+	 * 
+	 * @param ancienMotDePasse
+	 *            : String correspondant à l'ancien mot de passe pour vérification
+	 * @param nouveauMotDePasse
+	 *            : String correspondant au nouveau mot de passe
+	 * @throws TechnicalException
+	 *             si l'utilisateur n'est pas connecté ou si l'ancien mot de passe est incorrect
+	 */
+	public void changerMotDePasse(String ancienMotDePasse, String nouveauMotDePasse) throws TechnicalException {
+		loginManager.changerMotDePasse(ancienMotDePasse, nouveauMotDePasse);
+	}
 }
