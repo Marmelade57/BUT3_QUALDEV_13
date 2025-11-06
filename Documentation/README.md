@@ -43,13 +43,13 @@ Si ce n'est pas le cas, vérifiez que seul la partie du git contenant le projet 
   -  La partie <<-DskipTests>> de la commande permet de build l'application sans éxecuter tous les tests au démarrage.
 
 - Une fois sur le nouvel onglet choisir la catégorie "Modules". 
+- Cliquer ensuite sur la section "Dependencies", puis dans la liste déroulante "Module SDK", choisir exactement la version 17 de Oracle OpenJDK puis cliquer sur Apply.
 <img src="./SDK/categorie_modules.png" />
 
-- Cliquer ensuite sur la section "Dependencies", puis dans la liste déroulante "Module SDK", choisir exactement la version 11 de Oracle OpenJDK puis cliquer sur Apply. 
-<img src="./SDK/ver_module_sdk.png" />
+
 
 - Cliquer sur le bouton "Play" vert en haut à droite pour build l'application. 
-<img src="./build_application.png" />
+<img src="./bouton_run.png" />
 
 <h4>JUnit</h4>
 
