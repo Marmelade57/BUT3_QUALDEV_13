@@ -65,15 +65,20 @@
 
 	<!-- ============= Modele ============= -->
 
+	<!-- Bean Banque -->
+	<bean id="banque" class="com.iut.banque.modele.Banque" scope="singleton" />
+
+	<!-- Injection de la Dao dans le BankManager par le setter -->
+	<!-- Injection de Banque dans le constructeur de BanqueManager -->
+	<bean id="banqueManager" class="com.iut.banque.facade.BanqueManager">
+		<constructor-arg ref="banque" />
+		<property name="dao" ref="daoHibernate" />
+	</bean>
+
 	<!-- Injection des managers dans la facade par le constructor -->
 	<bean id="banqueFacade" class="com.iut.banque.facade.BanqueFacade">
 		<constructor-arg ref="loginManager" />
 		<constructor-arg ref="banqueManager" />
-	</bean>
-
-	<!-- Injection de la Dao dans le BankManager par le setter -->
-	<bean id="banqueManager" class="com.iut.banque.facade.BanqueManager">
-		<property name="dao" ref="daoHibernate" />
 	</bean>
 
 	<!-- Injection de la Dao dans le LoginManager par le setter -->
