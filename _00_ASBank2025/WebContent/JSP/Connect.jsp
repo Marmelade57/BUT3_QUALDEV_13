@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
-<html>
+<html lang="fr">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Tableau de bord</title>
@@ -26,6 +26,9 @@
 	</p>
 	<p>Voici l'état de vos comptes :</p>
 	<table>
+        <th>
+            Comptes
+        </th>
 		<tr>
 			<td><b>Numéro de compte</b></td>
 			<td><b>Type de compte</b></td>
