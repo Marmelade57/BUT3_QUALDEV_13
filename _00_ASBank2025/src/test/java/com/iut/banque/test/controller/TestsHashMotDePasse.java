@@ -1,7 +1,6 @@
 package com.iut.banque.test.controller;
 
 import com.iut.banque.controller.HashMotDePasse;
-import com.iut.banque.controller.HashMotDePasse.HashResult;
 import org.junit.Test;
 
 import java.util.Base64;

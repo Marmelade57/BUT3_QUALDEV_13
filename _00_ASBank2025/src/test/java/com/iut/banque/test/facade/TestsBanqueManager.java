@@ -39,18 +39,20 @@ public class TestsBanqueManager {
 		}
 	}
 
-	@Test
-	public void TestCreationDunClientAvecDeuxNumerosDeCompteIdentiques() {
-		try {
-			bm.loadAllClients();
-			bm.createClient("t.test1", "password", "test1nom", "test1prenom", "test town", true, "0101010101");
-			fail();
-		} catch (IllegalOperationException e) {
-		} catch (Exception te) {
-			te.printStackTrace();
-			fail("Une Exception " + te.getClass().getSimpleName() + " a été récupérée");
-		}
-	}
+    @Test
+    public void TestCreationDunClientAvecDeuxNumerosDeCompteIdentiques() {
+        try {
+            bm.loadAllClients();
+            bm.createClient("t.test1", "password", "test1nom", "test1prenom", "test town", true, "0101010101");
+            fail("Une IllegalOperationException aurait dû être levée");
+        } catch (IllegalOperationException e) {
+            // Succès attendu : un client avec un numéro de compte identique ne doit pas être créé
+            assertTrue(true);
+        } catch (Exception te) {
+            te.printStackTrace();
+            fail("Une Exception inattendue " + te.getClass().getSimpleName() + " a été levée");
+        }
+    }
 
 	// Tests par rapport à la suppression de comptes
 	@Test
@@ -66,16 +68,18 @@ public class TestsBanqueManager {
 		}
 	}
 
-	@Test
-	public void TestSuppressionDunCompteAvecDecouvertAvecSoldeDifferentDeZero() {
-		try {
-			bm.deleteAccount(bm.getAccountById("CADNV00000"));
-			fail("Une IllegalOperationException aurait dû être récupérée");
-		} catch (IllegalOperationException e) {
-		} catch (Exception te) {
-			fail("Une Exception " + te.getClass().getSimpleName() + " a été récupérée");
-		}
-	}
+    @Test
+    public void TestSuppressionDunCompteAvecDecouvertAvecSoldeDifferentDeZero() {
+        try {
+            bm.deleteAccount(bm.getAccountById("CADNV00000"));
+            fail("Une IllegalOperationException aurait dû être levée");
+        } catch (IllegalOperationException e) {
+            // Succès attendu : suppression interdite si le compte a un solde non nul
+            assertTrue(true);
+        } catch (Exception te) {
+            fail("Une exception inattendue " + te.getClass().getSimpleName() + " a été levée");
+        }
+    }
 
 	@Test
 	public void TestSuppressionDunCompteSansDecouvertAvecSoldeZero() {
@@ -89,16 +93,18 @@ public class TestsBanqueManager {
 		}
 	}
 
-	@Test
-	public void TestSuppressionDunCompteSansDecouvertAvecSoldeDifferentDeZero() {
-		try {
-			bm.deleteAccount(bm.getAccountById("CSDNV00000"));
-			fail("Une IllegalOperationException aurait dû être récupérée");
-		} catch (IllegalOperationException e) {
-		} catch (Exception te) {
-			fail("Une Exception " + te.getClass().getSimpleName() + " a été récupérée");
-		}
-	}
+    @Test
+    public void TestSuppressionDunCompteSansDecouvertAvecSoldeDifferentDeZero() {
+        try {
+            bm.deleteAccount(bm.getAccountById("CSDNV00000"));
+            fail("Une IllegalOperationException aurait dû être levée");
+        } catch (IllegalOperationException e) {
+            // Succès attendu : impossible de supprimer un compte avec un solde non nul
+            assertTrue(true);
+        } catch (Exception te) {
+            fail("Une exception inattendue " + te.getClass().getSimpleName() + " a été levée");
+        }
+    }
 
 	// Tests en rapport avec la suppression d'utilisateurs
 	@Test
@@ -115,18 +121,20 @@ public class TestsBanqueManager {
 		}
 	}
 
-	@Test
-	public void TestSuppressionDuDernierManagerDeLaBaseDeDonnees() {
-		bm.loadAllGestionnaires();
-		try {
-			bm.deleteUser(bm.getUserById("admin"));
-			fail("Une IllegalOperationException aurait dû être récupérée");
-		} catch (IllegalOperationException e) {
-		} catch (Exception te) {
-			te.printStackTrace();
-			fail("Une Exception " + te.getClass().getSimpleName() + " a été récupérée");
-		}
-	}
+    @Test
+    public void TestSuppressionDuDernierManagerDeLaBaseDeDonnees() {
+        bm.loadAllGestionnaires();
+        try {
+            bm.deleteUser(bm.getUserById("admin"));
+            fail("Une IllegalOperationException aurait dû être levée");
+        } catch (IllegalOperationException e) {
+            // Succès attendu : impossible de supprimer le dernier gestionnaire
+            assertTrue(true);
+        } catch (Exception te) {
+            te.printStackTrace();
+            fail("Une exception inattendue " + te.getClass().getSimpleName() + " a été levée");
+        }
+    }
 
 	@Test
 	public void TestSuppressionDunClientAvecComptesDeSoldeZero() {
@@ -145,26 +153,30 @@ public class TestsBanqueManager {
 		}
 	}
 
-	@Test
-	public void TestSuppressionDunClientAvecUnCompteDeSoldePositif() {
-		try {
-			bm.deleteUser(bm.getUserById("j.doe1"));
-			fail("Une IllegalOperationException aurait dû être récupérée");
-		} catch (IllegalOperationException e) {
-		} catch (Exception te) {
-			fail("Une Exception " + te.getClass().getSimpleName() + " a été récupérée");
-		}
-	}
+    @Test
+    public void TestSuppressionDunClientAvecUnCompteDeSoldePositif() {
+        try {
+            bm.deleteUser(bm.getUserById("j.doe1"));
+            fail("Une IllegalOperationException aurait dû être levée");
+        } catch (IllegalOperationException e) {
+            // Succès attendu : on ne peut pas supprimer un client ayant un compte au solde positif
+            assertTrue(true);
+        } catch (Exception te) {
+            fail("Une exception inattendue " + te.getClass().getSimpleName() + " a été levée");
+        }
+    }
 
-	@Test
-	public void TestSuppressionDunClientAvecUnCompteAvecDecouvertDeSoldeNegatif() {
-		try {
-			bm.deleteUser(bm.getUserById("j.doe1"));
-			fail("Une IllegalOperationException aurait dû être récupérée");
-		} catch (IllegalOperationException e) {
-		} catch (Exception te) {
-			fail("Une Exception " + te.getClass().getSimpleName() + " a été récupérée");
-		}
-	}
+    @Test
+    public void TestSuppressionDunClientAvecUnCompteAvecDecouvertDeSoldeNegatif() {
+        try {
+            bm.deleteUser(bm.getUserById("j.doe1"));
+            fail("Une IllegalOperationException aurait dû être levée");
+        } catch (IllegalOperationException e) {
+            // Succès attendu : on ne peut pas supprimer un client ayant un compte avec un découvert
+            assertTrue(true);
+        } catch (Exception te) {
+            fail("Une exception inattendue " + te.getClass().getSimpleName() + " a été levée");
+        }
+    }
 
 }

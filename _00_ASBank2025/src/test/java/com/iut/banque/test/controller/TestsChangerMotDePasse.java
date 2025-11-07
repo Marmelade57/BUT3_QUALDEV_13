@@ -5,15 +5,12 @@ import com.iut.banque.exceptions.TechnicalException;
 import com.iut.banque.facade.BanqueFacade;
 import com.iut.banque.modele.Client;
 import com.iut.banque.modele.Utilisateur;
-import org.junit.Before;
 import org.junit.Test;
 import com.iut.banque.exceptions.IllegalFormatException;
 
 import com.opensymphony.xwork2.ActionContext;
 import org.apache.struts2.StrutsJUnit4TestCase;
-import org.apache.struts2.dispatcher.mapper.ActionMapping;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockServletContext;
 
@@ -88,7 +85,7 @@ public class TestsChangerMotDePasse extends StrutsJUnit4TestCase<ChangerMotDePas
 		}
 	}
 
-	@Before
+	@Override
 	public void setUp() throws Exception {
 		try {
 			super.setUp();

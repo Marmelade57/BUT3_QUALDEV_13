@@ -37,14 +37,16 @@ public class TestsCompteSansDecouvert {
 		 * Méthode qui va tester la méthode debiter avec un montant négatif,
 		 * auquel cas il devrait attraper un IllegalFormatExcepion
 		 */
-		try {
-			compte.debiter(-100);
-			fail("La méthode n'a pas renvoyé d'exception!");
-		} catch (IllegalFormatException ife) {
-		} catch (Exception e) {
-			fail("Exception de type " + e.getClass().getSimpleName()
-					+ " récupérée alors qu'un IllegalFormatException était attendu");
-		}
+        try {
+            compte.debiter(-100);
+            fail("La méthode n'a pas renvoyé d'exception !");
+        } catch (IllegalFormatException ife) {
+            // Succès attendu
+            assertTrue(true);
+        } catch (Exception e) {
+            fail("Exception de type " + e.getClass().getSimpleName()
+                    + " récupérée alors qu'une IllegalFormatException était attendue");
+        }
 	}
 
 	/**
@@ -76,11 +78,16 @@ public class TestsCompteSansDecouvert {
 		 * du seuil pour le compte avec découvert). La fonction devrait renvoyer
 		 * une exception en cas de problême
 		 */
-		try {
-			compte.debiter(200);
-			fail("Il devrait avoir une InsufficientFundsException ici.");
-		} catch (InsufficientFundsException e) {
-		}
+        try {
+            compte.debiter(200);
+            fail("Il aurait dû y avoir une InsufficientFundsException !");
+        } catch (InsufficientFundsException e) {
+            // Succès attendu
+            assertTrue(true);
+        } catch (Exception e) {
+            fail("Exception de type " + e.getClass().getSimpleName() +
+                    " récupérée alors qu'une InsufficientFundsException était attendue");
+        }
 	}
 
 }
