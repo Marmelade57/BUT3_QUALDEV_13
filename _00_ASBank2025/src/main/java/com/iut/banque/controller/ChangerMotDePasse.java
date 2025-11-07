@@ -12,6 +12,7 @@ import com.iut.banque.modele.Utilisateur;
  * Contrôleur pour gérer le changement de mot de passe d'un utilisateur connecté.
  */
 public class ChangerMotDePasse extends ActionSupport {
+    private static final String ERREUR = "ERROR"
 
 	private static final long serialVersionUID = 1L;
 	private String ancienMotDePasse;
@@ -46,7 +47,7 @@ public class ChangerMotDePasse extends ActionSupport {
 	public String execute() {
 		// Vérifier que l'utilisateur est connecté
 		if (banque.getConnectedUser() == null) {
-			return "ERROR";
+			return ERREUR;
 		}
 		return "SUCCESS";
 	}
@@ -55,7 +56,7 @@ public class ChangerMotDePasse extends ActionSupport {
 	 * Méthode pour effectuer le changement de mot de passe.
 	 * Délègue la validation et le hashage à LoginManager pour éviter la duplication.
 	 * 
-	 * @return String, "SUCCESS" si le changement est réussi, "ERROR" sinon
+	 * @return String, "SUCCESS" si le changement est réussi, "ERROR" (ERREUR) sinon
 	 */
 	public String changerMotDePasse() {
 		Utilisateur utilisateurConnecte = banque.getConnectedUser();
@@ -63,34 +64,34 @@ public class ChangerMotDePasse extends ActionSupport {
 		// Vérifier que l'utilisateur est connecté
 		if (utilisateurConnecte == null) {
 			message = "Vous devez être connecté pour changer votre mot de passe.";
-			return "ERROR";
+			return ERREUR;
 		}
 
 		// Validation de l'ancien mot de passe
 		if (ancienMotDePasse == null || ancienMotDePasse.trim().isEmpty()) {
 			message = "L'ancien mot de passe est requis.";
-			return "ERROR";
+			return ERREUR;
 		}
 
 		// Validation du nouveau mot de passe avec la classe utilitaire
 		String erreurValidation = ValidationMotDePasse.validerMotDePasse(nouveauMotDePasse);
 		if (erreurValidation != null) {
 			message = erreurValidation;
-			return "ERROR";
+			return ERREUR;
 		}
 
 		// Validation de la confirmation
 		String erreurConfirmation = ValidationMotDePasse.validerConfirmation(nouveauMotDePasse, confirmationMotDePasse);
 		if (erreurConfirmation != null) {
 			message = erreurConfirmation;
-			return "ERROR";
+			return ERREUR;
 		}
 
 		// Vérifier que le nouveau mot de passe est différent de l'ancien
 		String erreurDifference = ValidationMotDePasse.validerDifference(ancienMotDePasse, nouveauMotDePasse);
 		if (erreurDifference != null) {
 			message = erreurDifference;
-			return "ERROR";
+			return ERREUR;
 		}
 
 		// Effectuer le changement de mot de passe
@@ -104,11 +105,11 @@ public class ChangerMotDePasse extends ActionSupport {
 			return "SUCCESS";
 		} catch (com.iut.banque.exceptions.TechnicalException e) {
 			message = e.getMessage();
-			return "ERROR";
+			return ERREUR;
 		} catch (Exception e) {
 			e.printStackTrace();
 			message = "Une erreur est survenue lors du changement de mot de passe.";
-			return "ERROR";
+			return ERREUR;
 		}
 	}
 
