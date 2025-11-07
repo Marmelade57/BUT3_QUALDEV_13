@@ -12,7 +12,7 @@ import com.iut.banque.modele.Utilisateur;
  * Contrôleur pour gérer le changement de mot de passe d'un utilisateur connecté.
  */
 public class ChangerMotDePasse extends ActionSupport {
-    private static final String ERREUR = "ERROR"
+    private static final String ERREUR = "ERROR";
 
 	private static final long serialVersionUID = 1L;
 	private String ancienMotDePasse;

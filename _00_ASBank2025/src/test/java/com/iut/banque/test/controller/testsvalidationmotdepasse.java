@@ -33,20 +33,20 @@ class TestsValidationMotDePasse {
     @Test
     void testValiderMotDePasseValide() {
         String resultat = ValidationMotDePasse.validerMotDePasse("MotDePasse123");
-        assertNull("Un mot de passe valide ne doit pas retourner d'erreur", resultat);
+        assertNull(resultat, "Un mot de passe valide ne doit pas retourner d'erreur");
     }
 
     @Test
     void testValiderMotDePasseLongueurMinimale() {
         String resultat = ValidationMotDePasse.validerMotDePasse("12345678");
-        assertNull("Un mot de passe de 8 caractères doit être valide", resultat);
+        assertNull(resultat, "Un mot de passe de 8 caractères doit être valide");
     }
 
     // 🔹 Tests pour validerConfirmation
     @Test
     void testValiderConfirmationValide() {
         String resultat = ValidationMotDePasse.validerConfirmation("MotDePasse123", "MotDePasse123");
-        assertNull("Une confirmation correcte ne doit pas retourner d'erreur", resultat);
+        assertNull(resultat, "Une confirmation correcte ne doit pas retourner d'erreur");
     }
 
     @Test
@@ -74,7 +74,7 @@ class TestsValidationMotDePasse {
     @Test
     void testValiderDifferenceMotsDePasseDifferents() {
         String resultat = ValidationMotDePasse.validerDifference("AncienMotDePasse", "NouveauMotDePasse");
-        assertNull("Des mots de passe différents ne doivent pas retourner d'erreur", resultat);
+        assertNull(resultat, "Des mots de passe différents ne doivent pas retourner d'erreur");
     }
 
     @Test
@@ -87,12 +87,12 @@ class TestsValidationMotDePasse {
     @Test
     void testValiderDifferenceAncienMotDePasseNull() {
         String resultat = ValidationMotDePasse.validerDifference(null, "NouveauMotDePasse");
-        assertNull("Si l'ancien mot de passe est null, la validation doit passer", resultat);
+        assertNull(resultat, "Si l'ancien mot de passe est null, la validation doit passer");
     }
 
     @Test
     void testValiderDifferenceNouveauMotDePasseNull() {
         String resultat = ValidationMotDePasse.validerDifference("AncienMotDePasse", null);
-        assertNull("Si le nouveau mot de passe est null, la validation doit passer", resultat);
+        assertNull(resultat, "Si le nouveau mot de passe est null, la validation doit passer");
     }
 }

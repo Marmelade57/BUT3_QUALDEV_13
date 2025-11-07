@@ -41,6 +41,10 @@ public class ValidationMotDePasse {
 			return "La confirmation du mot de passe est requise.";
 		}
 
+		if (motDePasse == null) {
+			return "Le mot de passe est requis.";
+		}
+
 		if (!motDePasse.equals(confirmation)) {
 			return "Le mot de passe et la confirmation ne correspondent pas.";
 		}
@@ -58,7 +62,12 @@ public class ValidationMotDePasse {
 	 * @return null si les mots de passe sont différents, un message d'erreur sinon
 	 */
 	public static String validerDifference(String ancienMotDePasse, String nouveauMotDePasse) {
-		if (ancienMotDePasse != null && ancienMotDePasse.equals(nouveauMotDePasse)) {
+		// Si l'un des deux est null, la validation passe (pas de contrainte)
+		if (ancienMotDePasse == null || nouveauMotDePasse == null) {
+			return null;
+		}
+
+		if (ancienMotDePasse.equals(nouveauMotDePasse)) {
 			return "Le nouveau mot de passe doit être différent de l'ancien.";
 		}
 
