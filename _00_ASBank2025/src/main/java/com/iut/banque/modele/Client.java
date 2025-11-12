@@ -19,7 +19,7 @@ import com.iut.banque.exceptions.IllegalFormatException;
 @Entity
 @DiscriminatorValue("CLIENT")
 public class Client extends Utilisateur {
-
+    private static final long serialVersionUID = 8539746362559573156L;
 	/**
 	 * Numéro du client.
 	 * 

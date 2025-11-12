@@ -1,6 +1,7 @@
 package com.iut.banque.converter;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 import org.apache.struts2.util.StrutsTypeConverter;
@@ -21,7 +22,7 @@ import com.iut.banque.modele.Compte;
  * Compte.
  */
 public class AccountConverter extends StrutsTypeConverter {
-    Logger logger = Logger.getLogger(getClass().getName());
+    private static final Logger LOGGER = Logger.getLogger(AccountConverter.class.getName());
 
 	/**
 	 * DAO utilisée pour récuperer les objets correspondants à l'id passé en
@@ -32,7 +33,7 @@ public class AccountConverter extends StrutsTypeConverter {
 	 * Ainsi, au chargement de l'application, trois objets de cette classe sont
 	 * instanciés et seulement le premier a une DAO injectée correctement.
 	 */
-	private static IDao dao;
+	private static final AtomicReference<IDao> DAO = new AtomicReference<>();
 
 	/**
 	 * Constructeur avec paramêtre pour le AccountConverter.
@@ -42,16 +43,17 @@ public class AccountConverter extends StrutsTypeConverter {
 	 * @param dao = AccountConverter.dao
 	 */
 	public AccountConverter(IDao dao) {
-        logger.info("=========================");
-        logger.info("Création du convertisseur de compte");
+        DAO.compareAndSet(null, dao);
+        LOGGER.info("=========================");
+        LOGGER.info("Création du convertisseur de compte");
 	}
 
 	/**
 	 * 	Constructeur sans paramêtre pour le AccountConverter
 	 */
 	public AccountConverter() {
-		logger.info("=========================");
-		logger.info("Création du convertisseur de compte");
+		LOGGER.info("=========================");
+		LOGGER.info("Création du convertisseur de compte");
 	}
 
 	/**
@@ -61,7 +63,11 @@ public class AccountConverter extends StrutsTypeConverter {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Object convertFromString(Map context, String[] values, Class classe) {
-		Compte compte = dao.getAccountById(values[0]);
+        IDao localDao = DAO.get();
+        if (localDao == null) {
+            throw new IllegalStateException("DAO non initialisée pour AccountConverter");
+        }
+		Compte compte = localDao.getAccountById(values[0]);
 		if (compte == null) {
 			throw new TypeConversionException("Impossible de convertir la chaine suivante : " + values[0]);
 		}

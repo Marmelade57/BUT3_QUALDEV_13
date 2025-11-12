@@ -1,5 +1,6 @@
 package com.iut.banque.facade;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import com.iut.banque.exceptions.IllegalFormatException;
@@ -14,10 +15,10 @@ import com.iut.banque.modele.CompteAvecDecouvert;
 import com.iut.banque.modele.Gestionnaire;
 import com.iut.banque.modele.Utilisateur;
 
-public class BanqueManager {
-
+public class BanqueManager implements Serializable {
+    private static final long serialVersionUID = 3401811578819431927L;
 	private Banque bank;
-	private IDao dao;
+	private transient IDao dao;
 
 	/**
 	 * Constructeur du BanqueManager

@@ -1,5 +1,6 @@
 package com.iut.banque.modele;
 
+import java.io.Serializable;
 import java.util.regex.Pattern;
 
 import javax.persistence.Column;
@@ -32,8 +33,8 @@ import com.iut.banque.exceptions.InsufficientFundsException;
 @Table(name = "Compte")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "avecDecouvert", discriminatorType = DiscriminatorType.STRING, length = 5)
-public abstract class Compte {
-
+public abstract class Compte implements Serializable {
+    private static final long serialVersionUID = -4554878826528324899L;
 	/**
 	 * L'identifiant unique du compte.
 	 * 

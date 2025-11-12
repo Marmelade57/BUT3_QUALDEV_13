@@ -1,13 +1,14 @@
 package com.iut.banque.modele;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import com.iut.banque.exceptions.IllegalFormatException;
 import com.iut.banque.exceptions.IllegalOperationException;
 import com.iut.banque.exceptions.InsufficientFundsException;
 
-public class Banque {
-
+public class Banque implements Serializable {
+    private static final long serialVersionUID = 5048551738217224948L;
 	private Map<String, Client> clients;
 	private Map<String, Gestionnaire> gestionnaires;
 	private Map<String, Compte> accounts;

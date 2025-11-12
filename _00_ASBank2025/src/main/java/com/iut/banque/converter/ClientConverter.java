@@ -1,6 +1,7 @@
 package com.iut.banque.converter;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 import org.apache.struts2.util.StrutsTypeConverter;
@@ -21,7 +22,7 @@ import com.iut.banque.modele.Client;
  * Client.
  */
 public class ClientConverter extends StrutsTypeConverter {
-    Logger logger = Logger.getLogger(getClass().getName());
+    private static final Logger LOGGER = Logger.getLogger(ClientConverter.class.getName());
 
 	/**
 	 * DAO utilisée pour récuperer les objets correspondants à l'id passé en
@@ -32,7 +33,7 @@ public class ClientConverter extends StrutsTypeConverter {
 	 * Ainsi, au chargement de l'application, trois objets de cette classe sont
 	 * instanciés et seulement le premier a une DAO injectée correctement.
 	 */
-	private static IDao dao;
+	private static final AtomicReference<IDao> DAO = new AtomicReference<>();
 
 	/**
 	 * Constructeur avec paramêtre pour le ClientConverter.
@@ -42,16 +43,17 @@ public class ClientConverter extends StrutsTypeConverter {
 	 * @param dao = ClientConverter.dao
 	 */
 	public ClientConverter(IDao dao) {
-		logger.info("=========================");
-        logger.info("Création du convertisseur de client");
+        DAO.compareAndSet(null, dao);
+		LOGGER.info("=========================");
+        LOGGER.info("Création du convertisseur de client");
 	}
 
 	/**
 	 * Constructeur sans paramêtre pour le ClientConverter
 	 */
 	public ClientConverter() {
-		logger.info("=========================");
-		logger.info("Création du convertisseur de client");
+		LOGGER.info("=========================");
+		LOGGER.info("Création du convertisseur de client");
 	}
 
 	/**
@@ -61,8 +63,11 @@ public class ClientConverter extends StrutsTypeConverter {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Object convertFromString(Map context, String[] values, Class classe) {
-		Client client = null;
-		client = (Client) dao.getUserById(values[0]);
+        IDao localDao = DAO.get();
+        if (localDao == null) {
+            throw new IllegalStateException("DAO non initialisée pour ClientConverter");
+        }
+		Client client = (Client) localDao.getUserById(values[0]);
 		if (client == null) {
 			throw new TypeConversionException("Impossible de convertir la chaine suivante : " + values[0]);
 		}

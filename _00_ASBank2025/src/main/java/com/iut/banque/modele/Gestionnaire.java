@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 
 import com.iut.banque.exceptions.IllegalFormatException;
 
+
 /**
  * Cette classe représente un gestionnaire de comptes qui doit pouvoir accéder à
  * tous les comptes de sa banque.
@@ -12,7 +13,7 @@ import com.iut.banque.exceptions.IllegalFormatException;
 @Entity
 @DiscriminatorValue("MANAGER")
 public class Gestionnaire extends Utilisateur {
-
+    private static final long serialVersionUID = -1394177932427264797L;
 	/**
 	 * Constructeur de Gestionnaire avec tous les champs de la classe comme
 	 * paramètres.

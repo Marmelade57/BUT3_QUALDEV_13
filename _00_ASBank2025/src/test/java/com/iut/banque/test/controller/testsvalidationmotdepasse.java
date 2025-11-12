@@ -70,6 +70,13 @@ class TestsValidationMotDePasse {
         assertEquals("Le mot de passe et la confirmation ne correspondent pas.", resultat);
     }
 
+    @Test
+    void testValiderConfirmationMotDePasseNull() {
+        String resultat = ValidationMotDePasse.validerConfirmation(null, "Confirmation123");
+        assertNotNull("Une confirmation avec mot de passe null doit retourner une erreur", resultat);
+        assertEquals("Le mot de passe est requis.", resultat);
+    }
+
     // 🔹 Tests pour validerDifference
     @Test
     void testValiderDifferenceMotsDePasseDifferents() {

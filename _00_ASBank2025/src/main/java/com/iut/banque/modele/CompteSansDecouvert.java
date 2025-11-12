@@ -6,13 +6,14 @@ import javax.persistence.Entity;
 import com.iut.banque.exceptions.IllegalFormatException;
 import com.iut.banque.exceptions.InsufficientFundsException;
 
+
 /**
  * Cette classe représente un compte simple, sans découvert autorisé.
  */
 @Entity
 @DiscriminatorValue("SANS")
 public class CompteSansDecouvert extends Compte {
-	
+    private static final long serialVersionUID = 8691878248846841729L;
 	/**
 	 * Constructeur de CompteSansDecouvert avec tous les champs de la classe
 	 * comme paramètres.

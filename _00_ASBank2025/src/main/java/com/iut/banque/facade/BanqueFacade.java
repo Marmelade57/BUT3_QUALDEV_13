@@ -1,5 +1,6 @@
 package com.iut.banque.facade;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import com.iut.banque.constants.LoginConstants;
@@ -13,10 +14,11 @@ import com.iut.banque.modele.CompteAvecDecouvert;
 import com.iut.banque.modele.Gestionnaire;
 import com.iut.banque.modele.Utilisateur;
 
-public class BanqueFacade {
+public class BanqueFacade implements Serializable {
+    private static final long serialVersionUID = -2960676365210060572L;
 
-	private BanqueManager banqueManager;
-	private LoginManager loginManager;
+	private transient BanqueManager banqueManager;
+	private transient LoginManager loginManager;
 
 	/**
 	 * Constructeur de la facade sans paramètre

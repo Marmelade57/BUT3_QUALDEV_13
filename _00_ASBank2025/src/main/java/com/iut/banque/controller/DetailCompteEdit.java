@@ -4,7 +4,10 @@ import com.iut.banque.exceptions.IllegalFormatException;
 import com.iut.banque.exceptions.IllegalOperationException;
 import com.iut.banque.modele.CompteAvecDecouvert;
 
+import java.util.logging.Logger;
+
 public class DetailCompteEdit extends DetailCompte {
+    private static final Logger LOGGER = Logger.getLogger(DetailCompteEdit.class.getName());
 
 	private static final long serialVersionUID = 1L;
 	private String decouvertAutorise;
@@ -14,8 +17,8 @@ public class DetailCompteEdit extends DetailCompte {
 	 */
 	public DetailCompteEdit() {
 		super();
-		System.out.println("======================================");
-		System.out.println("Dans le constructeur DetailCompteEdit");
+		LOGGER.info("======================================");
+		LOGGER.info("Dans le constructeur DetailCompteEdit");
 	}
 
 	/**

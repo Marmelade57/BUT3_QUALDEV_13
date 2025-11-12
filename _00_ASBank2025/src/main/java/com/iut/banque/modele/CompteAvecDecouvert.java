@@ -9,13 +9,14 @@ import com.iut.banque.exceptions.IllegalOperationException;
 import com.iut.banque.exceptions.InsufficientFundsException;
 import com.iut.banque.exceptions.TechnicalException;
 
+
 /**
  * Cette classe représente un compte qui a un découvert autorisé.
  */
 @Entity
 @DiscriminatorValue("AVEC")
 public class CompteAvecDecouvert extends Compte {
-
+    private static final long serialVersionUID = 1654920950001283617L;
 	/**
 	 * Le découvert autorisé sur le compte. Il doit rester positif.
 	 * 

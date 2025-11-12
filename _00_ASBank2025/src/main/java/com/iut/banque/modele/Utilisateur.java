@@ -11,6 +11,8 @@ import javax.persistence.Table;
 
 import com.iut.banque.exceptions.IllegalFormatException;
 
+import java.io.Serializable;
+
 /**
  * Classe représentant un utilisateur quelconque.
  * 
@@ -27,8 +29,8 @@ import com.iut.banque.exceptions.IllegalFormatException;
 @Table(name = "Utilisateur")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING, length = 15)
-public abstract class Utilisateur {
-
+public abstract class Utilisateur implements Serializable {
+    private static final long serialVersionUID = -3339760784363529058L;
 	/**
 	 * L'identifiant (unique) de l'utilisateur.
 	 * 

@@ -5,7 +5,9 @@ package com.iut.banque.controller;
  * Centralise les règles de validation pour éviter la duplication de code.
  */
 public class ValidationMotDePasse {
-
+    private ValidationMotDePasse() {
+        throw new IllegalStateException("Utility class");
+    }
 	private static final int LONGUEUR_MINIMALE = 8;
 
 	/**

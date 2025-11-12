@@ -8,24 +8,27 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.iut.banque.facade.BanqueFacade;
 import com.iut.banque.modele.Utilisateur;
 
+import java.util.logging.Logger;
+
 /**
  * Contrôleur pour gérer le changement de mot de passe d'un utilisateur connecté.
  */
 public class ChangerMotDePasse extends ActionSupport {
+    private static final Logger LOGGER = Logger.getLogger(ChangerMotDePasse.class.getName());
     private static final String ERREUR = "ERROR";
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5053207241589481509L;
 	private String ancienMotDePasse;
 	private String nouveauMotDePasse;
 	private String confirmationMotDePasse;
 	private String message;
-	private BanqueFacade banque;
+	private transient BanqueFacade banque;
 
 	/**
 	 * Constructeur de la classe ChangerMotDePasse
 	 */
 	public ChangerMotDePasse() {
-		System.out.println("In Constructor from ChangerMotDePasse class");
+		LOGGER.info("In Constructor from ChangerMotDePasse class");
 		ApplicationContext context = WebApplicationContextUtils
 				.getRequiredWebApplicationContext(ServletActionContext.getServletContext());
 		this.banque = (BanqueFacade) context.getBean("banqueFacade");
@@ -44,6 +47,7 @@ public class ChangerMotDePasse extends ActionSupport {
 	 * 
 	 * @return String, "SUCCESS" pour afficher la page
 	 */
+    @Override
 	public String execute() {
 		// Vérifier que l'utilisateur est connecté
 		if (banque.getConnectedUser() == null) {

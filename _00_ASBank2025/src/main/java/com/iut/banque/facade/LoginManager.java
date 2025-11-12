@@ -122,7 +122,7 @@ public class LoginManager {
 	 *            : l'utilisateur dont on veut vérifier le mot de passe
 	 * @return true si le mot de passe est correct, false sinon
 	 */
-	private boolean verifierMotDePasse(String motDePasse, Utilisateur utilisateur) {
+	private boolean verifierMotDePasse(String motDePasse, Utilisateur utilisateur) throws TechnicalException {
 		if (utilisateur.isPasswordHashed()) {
 			// Mot de passe hashé : utiliser verifyPassword
 			HashMotDePasse hashMotDePasse = new HashMotDePasse();

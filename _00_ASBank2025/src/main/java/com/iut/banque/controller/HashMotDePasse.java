@@ -7,6 +7,8 @@ import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.Arrays;
 
+import com.iut.banque.exceptions.TechnicalException;
+
 public class HashMotDePasse {
 
     public static class HashResult {
@@ -26,37 +28,41 @@ public class HashMotDePasse {
         return salt;
     }
 
-    public HashResult hashPassword(String motDePasse) {
+    public HashResult hashPassword(String motDePasse) throws TechnicalException {
         if (motDePasse == null || motDePasse.isEmpty()) {
-            throw new IllegalArgumentException("Le mot de passe doit être une chaîne non vide");
+            throw new TechnicalException("Le mot de passe doit être une chaîne non vide");
         }
 
-        try {
-            byte[] sel = genererSel();
-            byte[] hash = computeHash(motDePasse, sel);
-            return new HashResult(sel, hash);
-        } catch (Exception e) {
-            throw new RuntimeException("Erreur lors du hashage du mot de passe", e);
-        }
+        byte[] sel = genererSel();
+        byte[] hash = computeHash(motDePasse, sel);
+        return new HashResult(sel, hash);
     }
 
     /**
      * Compute hash with a given salt — useful for verification or tests.
+     * 
+     * Note de sécurité : Utilise PBKDF2WithHmacSHA1 avec 65536 itérations.
+     * Bien que SHA-256 soit préférable, SHA-1 reste acceptable pour PBKDF2
+     * avec un nombre d'itérations élevé. Pour de nouveaux projets, considérer
+     * PBKDF2WithHmacSHA256.
      */
-    protected byte[] computeHash(String motDePasse, byte[] salt) {
+    protected byte[] computeHash(String motDePasse, byte[] salt) throws TechnicalException {
         try {
             KeySpec spec = new PBEKeySpec(motDePasse.toCharArray(), salt, 65536, 128);
+            // Note: PBKDF2WithHmacSHA1 est utilisé pour compatibilité avec l'existant
+            // Pour améliorer la sécurité, considérer PBKDF2WithHmacSHA256
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             return factory.generateSecret(spec).getEncoded();
         } catch (Exception e) {
-            throw new RuntimeException("Erreur lors du hschage", e);
+            throw new TechnicalException("Erreur lors du hashage du mot de passe", e);
         }
     }
 
     /**
      * Verifies whether a password matches the stored hash using the same salt.
      */
-    public boolean verifyPassword(String motDePasse, String storedSaltBase64, String storedHashBase64) {
+    public boolean verifyPassword(String motDePasse, String storedSaltBase64, String storedHashBase64)
+            throws TechnicalException {
         if (motDePasse == null || storedSaltBase64 == null || storedHashBase64 == null) {
             return false;
         }

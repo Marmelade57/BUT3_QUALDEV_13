@@ -1,5 +1,7 @@
 package com.iut.banque.controller;
 
+import java.util.logging.Logger;
+
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -11,9 +13,11 @@ import com.iut.banque.facade.BanqueFacade;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class CreerUtilisateur extends ActionSupport {
+    private static final Logger LOGGER = Logger.getLogger(CreerUtilisateur.class.getName());
 
-	private static final long serialVersionUID = 1L;
-	private BanqueFacade banque;
+
+    private static final long serialVersionUID = 1L;
+	private transient BanqueFacade banque;
 	private String userId;
 	private String nom;
 	private String prenom;
@@ -149,7 +153,7 @@ public class CreerUtilisateur extends ActionSupport {
 	 * Constructeur sans paramêtre de CreerUtilisateur
 	 */
 	public CreerUtilisateur() {
-		System.out.println("In Constructor from CreerUtilisateur class ");
+		LOGGER.info("In Constructor from CreerUtilisateur class ");
 		ApplicationContext context = WebApplicationContextUtils
 				.getRequiredWebApplicationContext(ServletActionContext.getServletContext());
 		this.banque = (BanqueFacade) context.getBean("banqueFacade");
@@ -199,6 +203,7 @@ public class CreerUtilisateur extends ActionSupport {
 	 * @return String : le status de l'action
 	 */
 	public String creationUtilisateur() {
+        String error = "ERROR";
 		try {
 			if (client) {
 				banque.createClient(userId, userPwd, nom, prenom, adresse, male, numClient);
@@ -210,20 +215,20 @@ public class CreerUtilisateur extends ActionSupport {
 			return "SUCCESS";
 		} catch (IllegalOperationException e) {
 			this.message = "L'identifiant à déjà été assigné à un autre utilisateur de la banque.";
-			this.result = "ERROR";
-			return "ERROR";
+			this.result = error;
+			return error;
 		} catch (TechnicalException e) {
 			this.message = "Le numéro de client est déjà assigné à un autre client.";
-			this.result = "ERROR";
-			return "ERROR";
+			this.result = error;
+			return error;
 		} catch (IllegalArgumentException e) {
 			this.message = "Le format de l'identifiant est incorrect.";
-			this.result = "ERROR";
-			return "ERROR";
+			this.result = error;
+			return error;
 		} catch (IllegalFormatException e) {
 			this.message = "Format du numéro de client incorrect.";
-			this.result = "ERROR";
-			return "ERROR";
+			this.result = error;
+			return error;
 		}
 	}
 }

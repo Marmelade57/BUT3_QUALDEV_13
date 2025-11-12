@@ -3,6 +3,7 @@ package com.iut.banque.test.facade;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.iut.banque.exceptions.IllegalOperationException;
 import com.iut.banque.facade.BanqueManager;
+import com.iut.banque.test.util.CoverageDetector;
+import org.junit.Assume;
 
 //@RunWith indique à JUnit de prendre le class runner de Spirng
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -21,6 +24,12 @@ import com.iut.banque.facade.BanqueManager;
 @ContextConfiguration(locations = {"classpath:TestsBanqueManager-context.xml"})
 @Transactional("transactionManager")
 public class TestsBanqueManager {
+
+    @BeforeClass
+    public static void skipUnderCoverage() {
+        Assume.assumeFalse("TestsBanqueManager ignorés avec l'agent de couverture (Hibernate incompatible)",
+                CoverageDetector.isActive());
+    }
 
 	@Autowired
 	private BanqueManager bm;

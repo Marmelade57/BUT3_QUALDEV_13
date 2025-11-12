@@ -13,9 +13,13 @@ import com.iut.banque.facade.BanqueFacade;
 import com.iut.banque.modele.Client;
 import com.iut.banque.modele.Compte;
 
-public class CreerCompte extends ActionSupport {
+import java.util.logging.Logger;
 
-	private static final long serialVersionUID = 1L;
+public class CreerCompte extends ActionSupport {
+    private static final Logger LOGGER = Logger.getLogger(CreerCompte.class.getName());
+
+
+    private static final long serialVersionUID = 2155305250331381667L;
 	private String numeroCompte;
 	private boolean avecDecouvert;
 	private double decouvertAutorise;
@@ -23,7 +27,7 @@ public class CreerCompte extends ActionSupport {
 	private String message;
 	private boolean error;
 	private boolean result;
-	private BanqueFacade banque;
+	private transient BanqueFacade banque;
 	private Compte compte;
 
 	/**
@@ -78,7 +82,7 @@ public class CreerCompte extends ActionSupport {
 	 * Constructeur sans paramêtre de CreerCompte
 	 */
 	public CreerCompte() {
-		System.out.println("In Constructor from CreerCompte class ");
+		LOGGER.info("In Constructor from CreerCompte class ");
 		ApplicationContext context = WebApplicationContextUtils
 				.getRequiredWebApplicationContext(ServletActionContext.getServletContext());
 		this.banque = (BanqueFacade) context.getBean("banqueFacade");
@@ -155,7 +159,9 @@ public class CreerCompte extends ActionSupport {
 		case "SUCCESS":
 			this.message = "Le compte " + compte.getNumeroCompte() + " a bien été créé.";
 			break;
-		}
+        default:
+            break;
+        }
 	}
 
 	/**
@@ -184,24 +190,25 @@ public class CreerCompte extends ActionSupport {
 	 * 
 	 * @return une chaine déterminant le résultat de l'action
 	 */
-	public String creationCompte() {
-		try {
-			if (avecDecouvert) {
-				try {
-					banque.createAccount(numeroCompte, client, decouvertAutorise);
-				} catch (IllegalOperationException e) {
-					e.printStackTrace();
-				}
-			} else {
-				banque.createAccount(numeroCompte, client);
-			}
-			this.compte = banque.getCompte(numeroCompte);
-			return "SUCCESS";
-		} catch (TechnicalException e) {
-			return "NONUNIQUEID";
-		} catch (IllegalFormatException e) {
-			return "INVALIDFORMAT";
-		}
+    public String creationCompte() {
+        try {
+            if (avecDecouvert) {
+                banque.createAccount(numeroCompte, client, decouvertAutorise);
+            } else {
+                banque.createAccount(numeroCompte, client);
+            }
 
-	}
+            this.compte = banque.getCompte(numeroCompte);
+            return "SUCCESS";
+
+        } catch (IllegalOperationException e) {
+            e.printStackTrace(); // ou mieux : logger l’erreur
+            return "ILLEGALOPERATION";
+        } catch (TechnicalException e) {
+            return "NONUNIQUEID";
+        } catch (IllegalFormatException e) {
+            return "INVALIDFORMAT";
+        }
+    }
+
 }
