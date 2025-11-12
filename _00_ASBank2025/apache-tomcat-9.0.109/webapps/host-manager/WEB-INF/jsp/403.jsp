@@ -16,7 +16,7 @@
 --%>
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<html lang="en">
  <head>
   <title>403 Access Denied</title>
   <style type="text/css">
@@ -37,7 +37,7 @@
    <p>
     By default the Host Manager is only accessible from a browser running on the
     same machine as Tomcat. If you wish to modify this restriction, you'll need
-    to edit the Host Manager's <tt>context.xml</tt> file.
+    to edit the Host Manager's <code>context.xml</code> file.
    </p>
    <p>
     If you have already configured the Host Manager application to allow access
@@ -53,12 +53,12 @@
    </p>
    <p> If you have not changed
     any configuration files, please examine the file
-    <tt>conf/tomcat-users.xml</tt> in your installation. That
+    <code>conf/tomcat-users.xml</code> in your installation. That
     file must contain the credentials to let you use this webapp.
    </p>
    <p>
-    For example, to add the <tt>admin-gui</tt> role to a user named
-    <tt>tomcat</tt> with a password of <tt>s3cret</tt>, add the following to the
+    For example, to add the <code>admin-gui</code> role to a user named
+    <code>tomcat</code> with a password of <code>s3cret</code>, add the following to the
     config file listed above.
    </p>
 <pre>
@@ -67,21 +67,21 @@
 </pre>
    <p>
     Note that for Tomcat 7 onwards, the roles required to use the host manager
-    application were changed from the single <tt>admin</tt> role to the
+    application were changed from the single <code>admin</code> role to the
     following two roles. You will need to assign the role(s) required for
     the functionality you wish to access.
    </p>
     <ul>
-      <li><tt>admin-gui</tt> - allows access to the HTML GUI</li>
-      <li><tt>admin-script</tt> - allows access to the text interface</li>
+      <li><code>admin-gui</code> - allows access to the HTML GUI</li>
+      <li><code>admin-script</code> - allows access to the text interface</li>
     </ul>
    <p>
     The HTML interface is protected against CSRF but the text interface is not.
     To maintain the CSRF protection:
    </p>
    <ul>
-    <li>Users with the <tt>admin-gui</tt> role should not be granted the
-       <tt>admin-script</tt> role.</li>
+    <li>Users with the <code>admin-gui</code> role should not be granted the
+       <code>admin-script</code> role.</li>
     <li>If the text interface is accessed through a browser (e.g. for testing
         since this interface is intended for tools not humans) then the browser
         must be closed afterwards to terminate the session.</li>

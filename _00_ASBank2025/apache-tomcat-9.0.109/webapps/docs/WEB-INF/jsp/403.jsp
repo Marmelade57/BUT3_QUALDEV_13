@@ -16,7 +16,7 @@
 --%>
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<html lang ="en">
  <head>
   <title>403 Access Denied</title>
   <style type="text/css">
@@ -37,7 +37,7 @@
     By default the documentation web application is only accessible from a browser
     running on the same machine as Tomcat. If you wish to modify this
     restriction, you'll need to edit the documentation web applications's
-    <tt>context.xml</tt> file.
+    <code>context.xml</code> file.
    </p>
  </body>
 

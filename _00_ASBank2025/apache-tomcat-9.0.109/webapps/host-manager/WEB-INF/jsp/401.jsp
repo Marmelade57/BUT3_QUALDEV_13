@@ -34,12 +34,12 @@
    <p>
     You are not authorized to view this page. If you have not changed
     any configuration files, please examine the file
-    <tt>conf/tomcat-users.xml</tt> in your installation. That
+    <tt>conf/tomcat-users.xml</code> in your installation. That
     file must contain the credentials to let you use this webapp.
    </p>
    <p>
-    For example, to add the <tt>admin-gui</tt> role to a user named
-    <tt>tomcat</tt> with a password of <tt>s3cret</tt>, add the following to the
+    For example, to add the <code>admin-gui</code> role to a user named
+    <tt>tomcat</code> with a password of <tt>s3cret</code>, add the following to the
     config file listed above.
    </p>
 <pre>
@@ -48,21 +48,21 @@
 </pre>
    <p>
     Note that for Tomcat 7 onwards, the roles required to use the host manager
-    application were changed from the single <tt>admin</tt> role to the
+    application were changed from the single <tt>admin</code> role to the
     following two roles. You will need to assign the role(s) required for
     the functionality you wish to access.
    </p>
     <ul>
-      <li><tt>admin-gui</tt> - allows access to the HTML GUI</li>
-      <li><tt>admin-script</tt> - allows access to the text interface</li>
+      <li><tt>admin-gui</code> - allows access to the HTML GUI</li>
+      <li><tt>admin-script</code> - allows access to the text interface</li>
     </ul>
    <p>
     The HTML interface is protected against CSRF but the text interface is not.
     To maintain the CSRF protection:
    </p>
    <ul>
-    <li>Users with the <tt>admin-gui</tt> role should not be granted the
-       <tt>admin-script</tt> role.</li>
+    <li>Users with the <tt>admin-gui</code> role should not be granted the
+       <tt>admin-script</code> role.</li>
     <li>If the text interface is accessed through a browser (e.g. for testing
         since this interface is intended for tools not humans) then the browser
         must be closed afterwards to terminate the session.</li>

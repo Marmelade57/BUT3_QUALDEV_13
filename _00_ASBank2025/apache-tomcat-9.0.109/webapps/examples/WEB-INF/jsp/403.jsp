@@ -37,7 +37,7 @@
     By default the examples web application is only accessible from a browser
     running on the same machine as Tomcat. If you wish to modify this
     restriction, you'll need to edit the example web application's
-    <tt>context.xml</tt> file.
+    <code>context.xml</code> file.
    </p>
  </body>
 

@@ -20,6 +20,8 @@ package websocket.drawboard.wsmessages;
  * Abstract base class for Websocket Messages (binary or string)
  * that can be buffered.
  */
+@Configuration
+@EnableWebMvc
 public abstract class AbstractWebsocketMessage {
 
 }
