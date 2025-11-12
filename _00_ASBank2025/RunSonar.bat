@@ -1,24 +1,26 @@
 @echo off
 setlocal enabledelayedexpansion
 
-rem Définition des chemins
+rem ============================================
+rem Configuration des chemins et variables
+rem ============================================
 set "SCRIPT_DIR=%~dp0"
 cd /d "%SCRIPT_DIR%"
 
 rem Configuration Java
 set "JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-17.0.17+10"
 set "PATH=%JAVA_HOME%\bin;%PATH%"
-
 echo [INFO] Using JAVA_HOME=%JAVA_HOME%
 
 rem Configuration SonarCloud
 set "SONAR_PROJECT_KEY=Marmelade57_BUT3_QUALDEV_13"
 set "SONAR_ORG=marmelade57"
 set "SONAR_HOST=https://sonarcloud.io"
-set "SONAR_TOKEN=%SONAR_TOKEN%"
-if "%SONAR_TOKEN%"=="" set "SONAR_TOKEN=ada0520817d2a5383da445e8922b4af80029b032"
-
+if "%SONAR_TOKEN%"=="" (
+    set "SONAR_TOKEN=ada0520817d2a5383da445e8922b4af80029b032"
+)
 echo [INFO] SonarCloud parameters: projectKey=%SONAR_PROJECT_KEY% organization=%SONAR_ORG% host=%SONAR_HOST%
+
 call mvn -version
 
 rem ============================================
@@ -33,56 +35,51 @@ if exist "target\coverage-reports" rmdir /s /q "target\coverage-reports"
 echo [INFO] Nettoyage terminé.
 
 rem ============================================
-rem ÉTAPE 2 : Build + Tests + Génération du rapport JaCoCo
+rem ÉTAPE 2 : Build + Tests + JaCoCo
 rem ============================================
 echo.
 echo [========================================]
 echo [ ÉTAPE 2/3 : Build, Tests et Génération du rapport JaCoCo ]
 echo [========================================]
 echo [INFO] Building project and running tests...
-call mvn -B -Pcoverage clean verify -Dmaven.test.failure.ignore=true -DskipTests=false
+call mvn -B -Pcoverage clean verify ^
+    -Dmaven.test.failure.ignore=true ^
+    -DskipTests=false ^
+    -Djacoco.destFile=target/jacoco.exec ^
+    -Djacoco.append=true ^
+    -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml,target/jacoco-ut/jacoco.xml ^
+    -Dsonar.jacoco.reportPaths=target/jacoco.exec ^
+    -Dsonar.jacoco.reportPath=target/jacoco.exec ^
+    -Dsonar.java.coveragePlugin=jacoco ^
+    -Dsonar.coverage.exclusions=**/model/**,**/dto/**,**/exception/** ^
+    -Dsonar.java.binaries=target/classes ^
+    -Dsonar.java.libraries=target/dependency/*.jar
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Build failed. Check Maven logs for details.
     exit /b 1
 )
-
 echo [INFO] Build and tests completed successfully.
 
-rem Vérification et génération du rapport JaCoCo
+rem Vérification du rapport JaCoCo
+echo [INFO] Vérification du rapport JaCoCo...
 set "JACOCO_XML=target\site\jacoco\jacoco.xml"
-echo [INFO] Checking for JaCoCo report at: %JACOCO_XML%
+set "JACOCO_EXEC=target\jacoco.exec"
 
-if not exist "%JACOCO_XML%" (
-    echo [WARN] JaCoCo XML report not found. Attempting to generate it...
-    echo [INFO] Checking for JaCoCo execution data...
-    if exist "target\jacoco.exec" (
-        echo [INFO] Found jacoco.exec file. Generating XML report...
-        call mvn jacoco:report -Djacoco.dataFile=target/jacoco.exec
-        if not exist "%JACOCO_XML%" (
-            echo [ERROR] Failed to generate JaCoCo XML report.
-            echo [ERROR] Cannot proceed to SonarCloud analysis without coverage report.
-            exit /b 1
-        )
-        echo [INFO] JaCoCo XML report generated successfully.
-    ) else (
-        echo [ERROR] No JaCoCo execution data found (target\jacoco.exec).
-        echo [ERROR] Make sure tests are executed with coverage enabled.
-        exit /b 1
-    )
-) else (
-    echo [INFO] JaCoCo XML report already exists.
-)
-
-rem Vérification finale que le rapport existe bien
-if not exist "%JACOCO_XML%" (
-    echo [ERROR] JaCoCo report still not found after generation attempt: %JACOCO_XML%
-    echo [ERROR] Cannot proceed to SonarCloud analysis.
+if not exist "%JACOCO_EXEC%" (
+    echo [ERROR] Fichier jacoco.exec introuvable dans target/
     exit /b 1
 )
 
-echo [INFO] JaCoCo report verified at: %JACOCO_XML%
-echo [INFO] File size: 
-for %%A in ("%JACOCO_XML%") do echo [INFO]   %%~zA bytes
+if not exist "%JACOCO_XML%" (
+    echo [INFO] Génération du rapport JaCoCo XML...
+    call mvn jacoco:report -Djacoco.dataFile=%JACOCO_EXEC%
+    if not exist "%JACOCO_XML%" (
+        echo [ERROR] Échec de la génération du rapport JaCoCo XML
+        exit /b 1
+    )
+)
+
+echo [INFO] Rapport JaCoCo prêt pour l'analyse SonarCloud
 
 rem ============================================
 rem ÉTAPE 3 : Envoi à SonarCloud
@@ -93,17 +90,30 @@ echo [ ÉTAPE 3/3 : Envoi à SonarCloud ]
 echo [========================================]
 echo [INFO] Running SonarCloud analysis...
 echo [INFO] Using JaCoCo report: %JACOCO_XML%
-call mvn -B sonar:sonar ^
-    -Dsonar.projectKey=%SONAR_PROJECT_KEY% ^
-    -Dsonar.organization=%SONAR_ORG% ^
-    -Dsonar.host.url=%SONAR_HOST% ^
-    -Dsonar.token=%SONAR_TOKEN% ^
-    -Dsonar.java.coveragePlugin=jacoco ^
-    -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml ^
-    -Dsonar.java.binaries=target/classes ^
-    -Dsonar.sources=src/main/java ^
-    -Dsonar.tests=src/test/java ^
-    -Dsonar.test.inclusions=src/test/**/*
+
+echo [INFO] Lancement de l'analyse SonarCloud...
+rem Construire la commande SonarQube
+set "SONAR_CMD=mvn -B sonar:sonar"
+set "SONAR_CMD=!SONAR_CMD! -Dsonar.projectKey=%SONAR_PROJECT_KEY%"
+set "SONAR_CMD=!SONAR_CMD! -Dsonar.organization=%SONAR_ORG%"
+set "SONAR_CMD=!SONAR_CMD! -Dsonar.host.url=%SONAR_HOST%"
+set "SONAR_CMD=!SONAR_CMD! -Dsonar.token=%SONAR_TOKEN%"
+set "SONAR_CMD=!SONAR_CMD! -Dsonar.java.coveragePlugin=jacoco"
+set "SONAR_CMD=!SONAR_CMD! -Dsonar.coverage.jacoco.xmlReportPaths=%JACOCO_XML%"
+set "SONAR_CMD=!SONAR_CMD! -Dsonar.java.binaries=target/classes"
+set "SONAR_CMD=!SONAR_CMD! -Dsonar.sources=src/main/java"
+set "SONAR_CMD=!SONAR_CMD! -Dsonar.tests=src/test/java"
+set "SONAR_CMD=!SONAR_CMD! -Dsonar.test.inclusions=src/test/**/*"
+set "SONAR_CMD=!SONAR_CMD! -Dsonar.sourceEncoding=UTF-8"
+set "SONAR_CMD=!SONAR_CMD! -Dsonar.java.source=17"
+set "SONAR_CMD=!SONAR_CMD! -Dsonar.coverage.exclusions=**/model/**,**/dto/**,**/exception/**"
+set "SONAR_CMD=!SONAR_CMD! -Dsonar.cpd.exclusions=**/model/**,**/dto/**"
+
+set "SONAR_CMD=!SONAR_CMD! -Dsonar.jacoco.reportPaths=target/jacoco.exec"
+set "SONAR_CMD=!SONAR_CMD! -Dsonar.verbose=true"
+
+echo [INFO] Commande SonarQube: !SONAR_CMD!
+call !SONAR_CMD!
 
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] SonarCloud analysis failed.
