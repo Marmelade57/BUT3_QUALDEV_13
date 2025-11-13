@@ -5,6 +5,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -111,7 +114,15 @@ class TestsValidationMotDePasse {
 
     @Test
     void testConstructorThrowsException() {
-        assertThrows(IllegalStateException.class, ValidationMotDePasse::new,
-            "Le constructeur doit lancer une IllegalStateException car c'est une classe utilitaire");
+        // Utilisation de la réflexion pour tester le constructeur privé
+        assertThrows(IllegalStateException.class, () -> {
+            try {
+                Constructor<ValidationMotDePasse> constructor = ValidationMotDePasse.class.getDeclaredConstructor();
+                constructor.setAccessible(true);
+                constructor.newInstance();
+            } catch (InvocationTargetException e) {
+                throw e.getTargetException();
+            }
+        }, "Le constructeur doit lancer une IllegalStateException car c'est une classe utilitaire");
     }
 }
