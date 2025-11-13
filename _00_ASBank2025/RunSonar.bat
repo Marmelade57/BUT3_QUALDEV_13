@@ -46,14 +46,51 @@ call mvn -B -Pcoverage clean verify ^
     -Dmaven.test.failure.ignore=true ^
     -DskipTests=false ^
     -Djacoco.destFile=target/jacoco.exec ^
-    -Djacoco.append=true ^
-    -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml,target/jacoco-ut/jacoco.xml ^
-    -Dsonar.jacoco.reportPaths=target/jacoco.exec ^
-    -Dsonar.jacoco.reportPath=target/jacoco.exec ^
-    -Dsonar.java.coveragePlugin=jacoco ^
-    -Dsonar.coverage.exclusions=**/model/**,**/dto/**,**/exception/** ^
-    -Dsonar.java.binaries=target/classes ^
-    -Dsonar.java.libraries=target/dependency/*.jar
+    -Djacoco.append=true
+
+if %ERRORLEVEL% neq 0 (
+    echo [ERROR] Build failed. Check Maven logs for details.
+    exit /b 1
+)
+
+echo [INFO] Generating JaCoCo report...
+call mvn -B jacoco:report -Djacoco.dataFile=target/jacoco.exec -DoutputDirectory=target/site/jacoco
+
+if %ERRORLEVEL% neq 0 (
+    echo [ERROR] Failed to generate JaCoCo report.
+    exit /b 1
+)
+
+echo [INFO] Running SonarCloud analysis...
+
+rem Vérifier si le répertoire target/dependency existe
+if not exist "target\dependency" (
+    echo [WARNING] Le répertoire target/dependency n'existe pas. Utilisation d'une configuration alternative...
+    call mvn -B sonar:sonar ^
+        -Dsonar.projectKey=%SONAR_PROJECT_KEY% ^
+        -Dsonar.organization=%SONAR_ORG% ^
+        -Dsonar.host.url=%SONAR_HOST% ^
+        -Dsonar.login=%SONAR_TOKEN% ^
+        -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml ^
+        -Dsonar.java.coveragePlugin=jacoco ^
+        -Dsonar.coverage.exclusions=**/model/**,**/dto/**,**/exception/**,**/*Test*.java,**/*Tests.java ^
+        -Dsonar.java.binaries=target/classes ^
+        -Dsonar.sourceEncoding=UTF-8 ^
+        -Dsonar.scm.provider=git
+) else (
+    call mvn -B sonar:sonar ^
+        -Dsonar.projectKey=%SONAR_PROJECT_KEY% ^
+        -Dsonar.organization=%SONAR_ORG% ^
+        -Dsonar.host.url=%SONAR_HOST% ^
+        -Dsonar.login=%SONAR_TOKEN% ^
+        -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml ^
+        -Dsonar.java.coveragePlugin=jacoco ^
+        -Dsonar.coverage.exclusions=**/model/**,**/dto/**,**/exception/**,**/*Test*.java,**/*Tests.java ^
+        -Dsonar.java.binaries=target/classes ^
+        -Dsonar.java.libraries=target/dependency/*.jar ^
+        -Dsonar.sourceEncoding=UTF-8 ^
+        -Dsonar.scm.provider=git
+)
 if %ERRORLEVEL% neq 0 (
     echo [ERROR] Build failed. Check Maven logs for details.
     exit /b 1

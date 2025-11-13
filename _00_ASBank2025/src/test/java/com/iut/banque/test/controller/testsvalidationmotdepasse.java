@@ -102,4 +102,16 @@ class TestsValidationMotDePasse {
         String resultat = ValidationMotDePasse.validerDifference("AncienMotDePasse", null);
         assertNull(resultat, "Si le nouveau mot de passe est null, la validation doit passer");
     }
+
+    @Test
+    void testValiderDifferenceLesDeuxMotsDePasseNull() {
+        String resultat = ValidationMotDePasse.validerDifference(null, null);
+        assertNull(resultat, "Si les deux mots de passe sont null, la validation doit passer");
+    }
+
+    @Test
+    void testConstructorThrowsException() {
+        assertThrows(IllegalStateException.class, ValidationMotDePasse::new,
+            "Le constructeur doit lancer une IllegalStateException car c'est une classe utilitaire");
+    }
 }
