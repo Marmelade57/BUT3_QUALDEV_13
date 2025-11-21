@@ -184,6 +184,29 @@
         <!-- ============================ -->
         
         <!-- === Logging === -->
+        <!-- Log4j 2.x -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.22.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.22.0</version>
+        </dependency>
+        <!-- Log4j 1.2 Bridge (for libraries still using log4j 1.x) -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-1.2-api</artifactId>
+            <version>2.22.0</version>
+        </dependency>
+        <!-- SLF4J to Log4j 2 Bridge -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>2.22.0</version>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -296,6 +319,11 @@
                     <artifactId>xwork-core</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.31</version>
         </dependency>
         
         <!-- XWork Core (nécessaire pour Struts 2) -->
@@ -490,6 +518,22 @@
                                 <exclude>**/*Test*.class</exclude>
                                 <exclude>**/*Tests*.class</exclude>
                             </excludes>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>3.4.0</version>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                    <addClasspath>true</addClasspath>
+                                </manifest>
+                            </archive>
+                            <warSourceDirectory>WebContent</warSourceDirectory>
+                            <failOnMissingWebXml>false</failOnMissingWebXml>
+                            <webXml>WebContent/WEB-INF/web.xml</webXml>
                         </configuration>
                     </plugin>
                 </plugins>
