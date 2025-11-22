@@ -6,9 +6,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Formulaire de création d'un compte</title>
-<link rel="stylesheet" href="/_00_ASBank2025/style/style.css" />
-<script src="/_00_ASBank2025/js/jquery.js"></script>
-<script src="/_00_ASBank2025/js/jsCreerCompte.js"></script>
+<link rel="stylesheet" href="style/style.css" />
+<script src="js/jquery.js"></script>
+<script src="js/jsCreerCompte.js"></script>
 </head>
 
 <body>

@@ -7,12 +7,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Page de connexion</title>
-<link rel="stylesheet" href="/_00_ASBank2025/style/style.css" />
+    <link rel="stylesheet" href="style/style.css" />
 </head>
 
 <body>
 	<h1>Login :</h1>
-	<s:form name="myForm" action="controller.Connect.login.action"
+	<s:form name="myForm" action="loginUser"
 		method="POST">
 		<s:textfield label="Code user" name="userCde" />
 		<s:password label="Password" name="userPwd" />

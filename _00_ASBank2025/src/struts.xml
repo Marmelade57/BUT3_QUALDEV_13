@@ -55,7 +55,23 @@
 		</action>
 
 		<action name="redirectionLogin">
+			<result type="redirectAction">
+				<param name="actionName">login</param>
+			</result>
+		</action>
+		
+		<action name="login">
 			<result>/JSP/Login.jsp</result>
+		</action>
+		
+		<action name="loginUser" class="com.iut.banque.controller.Connect" method="login">
+			<result name="SUCCESS" type="redirectAction">
+				<param name="actionName">retourTableauDeBordManager</param>
+			</result>
+			<result name="SUCCESSMANAGER" type="redirectAction">
+				<param name="actionName">retourTableauDeBordManager</param>
+			</result>
+			<result name="ERROR">/JSP/Login.jsp</result>
 		</action>
 
 		<!-- Appel de la page compte avec un paramètre donné -->
