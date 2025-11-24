@@ -29,9 +29,15 @@ public class ChangerMotDePasse extends ActionSupport {
 	 */
 	public ChangerMotDePasse() {
 		LOGGER.info("In Constructor from ChangerMotDePasse class");
-		ApplicationContext context = WebApplicationContextUtils
-				.getRequiredWebApplicationContext(ServletActionContext.getServletContext());
-		this.banque = (BanqueFacade) context.getBean("banqueFacade");
+		try {
+			ApplicationContext context = WebApplicationContextUtils
+					.getRequiredWebApplicationContext(ServletActionContext.getServletContext());
+			this.banque = (BanqueFacade) context.getBean("banqueFacade");
+		} catch (Exception e) {
+			// Environnements de test ou hors conteneur : laisser la facade à null
+			LOGGER.warning("Impossible d'initialiser la facade Banque depuis le contexte web : " + e.getMessage());
+			this.banque = null;
+		}
 	}
 	
 	/**
@@ -50,7 +56,7 @@ public class ChangerMotDePasse extends ActionSupport {
     @Override
 	public String execute() {
 		// Vérifier que l'utilisateur est connecté
-		if (banque.getConnectedUser() == null) {
+		if (getConnectedUser() == null) {
 			return ERREUR;
 		}
 		return "SUCCESS";
@@ -63,7 +69,7 @@ public class ChangerMotDePasse extends ActionSupport {
 	 * @return String, "SUCCESS" si le changement est réussi, "ERROR" (ERREUR) sinon
 	 */
 	public String changerMotDePasse() {
-		Utilisateur utilisateurConnecte = banque.getConnectedUser();
+		Utilisateur utilisateurConnecte = getConnectedUser();
 
 		// Vérifier que l'utilisateur est connecté
 		if (utilisateurConnecte == null) {
@@ -104,6 +110,10 @@ public class ChangerMotDePasse extends ActionSupport {
 		// - Hasher le nouveau mot de passe
 		// - Mettre à jour la base de données
 		try {
+			if (banque == null) {
+				message = "Impossible de changer le mot de passe : service indisponible.";
+				return ERREUR;
+			}
 			banque.changerMotDePasse(ancienMotDePasse, nouveauMotDePasse);
 			message = "Votre mot de passe a été modifié avec succès.";
 			return "SUCCESS";
@@ -199,7 +209,19 @@ public class ChangerMotDePasse extends ActionSupport {
 	 * @return Utilisateur, l'utilisateur connecté
 	 */
 	public Utilisateur getConnectedUser() {
+		if (banque == null) {
+			return null;
+		}
 		return banque.getConnectedUser();
+	}
+
+	/**
+	 * Setter pour injecter la facade (utile pour les tests ou l'injection Spring)
+	 *
+	 * @param banque la facade BanqueFacade
+	 */
+	public void setBanque(BanqueFacade banque) {
+		this.banque = banque;
 	}
 }
 

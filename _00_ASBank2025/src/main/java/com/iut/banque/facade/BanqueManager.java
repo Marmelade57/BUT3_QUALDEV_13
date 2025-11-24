@@ -239,13 +239,23 @@ public class BanqueManager implements Serializable {
 	public void createClient(String userId, String userPwd, String nom, String prenom, String adresse, boolean male,
 			String numeroClient)
 			throws IllegalOperationException, TechnicalException, IllegalArgumentException, IllegalFormatException {
+		// Vérifier que le numéro de client est fourni et au bon format
+		if (numeroClient == null || numeroClient.trim().isEmpty()) {
+			throw new IllegalFormatException("Le numéro de client est requis.");
+		}
+		if (!Client.checkFormatNumeroClient(numeroClient)) {
+			throw new IllegalFormatException("Le numéro de client n'est pas au bon format.");
+		}
+
 		Map<String, Client> liste = this.getAllClients();
 		for (Map.Entry<String, Client> entry : liste.entrySet()) {
-			if (entry.getValue().getNumeroClient().equals(numeroClient)) {
+			String existingNumero = entry.getValue().getNumeroClient();
+			if (existingNumero != null && existingNumero.equals(numeroClient)) {
 				throw new IllegalOperationException(
 						"Un client avec le numero de client " + numeroClient + " existe déjà");
 			}
 		}
+
 		dao.createUser(nom, prenom, adresse, male, userId, userPwd, false, numeroClient);
 
 	}
