@@ -13,12 +13,12 @@
 <body>
 	<h1>Login :</h1>
 	<s:form name="myForm" action="loginUser"
-		method="POST">
+		method="POST" class="form">
 		<s:textfield label="Code user" name="userCde" />
 		<s:password label="Password" name="userPwd" />
 		<s:submit name="submit" />
 	</s:form>
-		<s:form name="myFormRetour" action="retourAccueil" method="POST">
+		<s:form name="myFormRetour" action="retourAccueil" method="POST" class="form">
 			<s:submit name="Retour" value="Retour à l'accueil" />
 		</s:form>
 </body>

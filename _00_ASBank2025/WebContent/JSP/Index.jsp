@@ -6,7 +6,7 @@
 <html lang="fr">
 <script type="text/javascript">
 	function DisplayMessage() {
-		alert('Ce TD a été donné pour les AS dans le cadre du cours de CO Avancé (Promotion 2017-2018)');
+		alert('Ce TD a été donné pour les 3A dans le cadre du cours de Qualité de Développements');
 	}
 </script>
 <link rel="stylesheet" href="style/style.css" />
@@ -20,14 +20,14 @@
 	<h1>Bienvenue sur l'application IUT Bank 2025</h1>
 	<p>
 		<img
-			src="https://www.iut-metz.univ-lorraine.fr/images/AdminSite/Logos/Logo_IUT_Metz.UL.small.png"
-			alt="logo" />
+			src="https://iut-metz.univ-lorraine.fr/sites/default/files/logo-iut-metz.png"
+			alt="logo" style="background-color: #173B6C" />
 	</p>
 	<input type="button" value="Information" name="info"
 		onClick="DisplayMessage()" />
 	<p style="font-size: 2em">
 		<s:url action="redirectionLogin" var="redirectionLogin" ></s:url>
-		<s:a href="%{redirectionLogin}">Page de Login</s:a>
+		<s:a href="%{redirectionLogin}" class="bouton">Page de Login</s:a>
 	</p>
 </body>
 <jsp:include page="/JSP/Footer.jsp" />

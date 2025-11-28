@@ -2,11 +2,13 @@ body
 {
 	font-family : 'Segoe UI', Arial, sans-serif;
 	text-align : center;
+    min-height: 80svh;
 }
-h1
+h1, h2, h3, h4, h5, h6
 {
 	text-align : center;
-	border : 5px outset blue;
+	/*border : 5px outset blue;*/
+    /*border-collapse: collapse;*/
 	margin-left: 20px;
 	margin-right: 20px;
 }
@@ -17,6 +19,7 @@ table
     padding : 5px;
     text-align: center;
     border: 3px outset blue;
+    border-collapse: collapse;
 }
 td
 {
@@ -65,4 +68,9 @@ footer
 	position:absolute;
 	top : 90px;
 	left : 30px;
+}
+a {
+    border: 1px black solid;
+    padding: 8px;
+    color: black;
 }

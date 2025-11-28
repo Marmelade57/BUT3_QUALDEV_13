@@ -18,6 +18,7 @@
 	
 	<p>Bienvenue <b><s:property value="connectedUser.prenom" /> <s:property value="connectedUser.nom" /></b> !</p>
 	<p>Que voulez vous faire ?</p>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0,1fr))">
 	<p>
 		<s:url action="urlChangerMotDePasse" var="urlChangerMotDePasse" />
 		<s:a href="%{urlChangerMotDePasse}">Changer mon mot de passe</s:a>
@@ -39,6 +40,7 @@
 		</s:url>
 		<s:a href="%{urlAjoutUtilisateur}">Ajout d'un utilisateur</s:a>
 	</p>
+    </div>
 </body>
 <jsp:include page="/JSP/Footer.jsp" />
 </html>
