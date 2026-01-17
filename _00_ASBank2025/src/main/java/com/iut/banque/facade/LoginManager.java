@@ -12,6 +12,7 @@ public class LoginManager {
 
 	private IDao dao;
 	private Utilisateur user;
+	private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(LoginManager.class.getName());
 
 	/**
 	 * Setter pour la DAO.
@@ -103,13 +104,38 @@ public class LoginManager {
 			throw new TechnicalException("L'ancien mot de passe est incorrect");
 		}
 
-		// Hasher le nouveau mot de passe
-		HashMotDePasse hashMotDePasse = new HashMotDePasse();
-		HashResult hashResult = hashMotDePasse.hashPassword(nouveauMotDePasse);
+		try {
+			if (dao == null) {
+				throw new TechnicalException("Service de données indisponible");
+			}
 
-		// Stocker le sel et le hash au format "salt:hash"
-		user.setHashedPassword(hashResult.saltBase64, hashResult.hashBase64);
-		dao.updateUser(user);
+			// Log diagnostique : état de l'utilisateur avant hash (ne pas logger le mot de passe)
+			LOGGER.info("ChangerMotDePasse: userId=" + (user.getUserId() == null ? "null" : user.getUserId())
+					+ ", isPasswordHashed=" + user.isPasswordHashed()
+					+ ", hasSalt=" + (user.getPasswordSalt() != null)
+					+ ", hasHash=" + (user.getPasswordHash() != null));
+
+			// Hasher le nouveau mot de passe
+			HashMotDePasse hashMotDePasse = new HashMotDePasse();
+			HashResult hashResult = hashMotDePasse.hashPassword(nouveauMotDePasse);
+
+			// Après hash : log de confirmation (toujours sans divulguer le hash)
+			LOGGER.info("ChangerMotDePasse: hash generated, saltLength=" + (hashResult.saltBase64 == null ? 0 : hashResult.saltBase64.length())
+					+ ", hashLength=" + (hashResult.hashBase64 == null ? 0 : hashResult.hashBase64.length()));
+
+			// Stocker le sel et le hash au format "salt:hash"
+			user.setHashedPassword(hashResult.saltBase64, hashResult.hashBase64);
+			dao.updateUser(user);
+		} catch (TechnicalException te) {
+			// Propager TechnicalException tel quel
+			throw te;
+		} catch (Exception e) {
+			LOGGER.severe("Erreur lors du traitement du changement de mot de passe : " + e.getMessage());
+			if (e.getCause() != null) {
+				LOGGER.severe("Cause: " + e.getCause());
+			}
+			throw new TechnicalException("Une erreur est survenue lors de la mise à jour du mot de passe");
+		}
 	}
 
 	/**

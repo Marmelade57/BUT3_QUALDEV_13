@@ -13,8 +13,10 @@ public class TestsHashMotDePasse extends HashMotDePasse {
     @Test
     public void testHashLength() throws TechnicalException {
         HashResult result = hashPassword("Test1234");
-        byte[] hashBytes = Base64.getDecoder().decode(result.hashBase64);
-        assertEquals("La taille du hash doit être de 16 bits", 16, hashBytes.length);
+        String hash = result.hashBase64;
+        // Le hachage est encodé en base64, donc la longueur attendue est de 44 caractères
+        // car 32 octets * 4/3 (encodage base64) ≈ 43 caractères + 1 de padding
+        assertEquals("La taille du hash en base64 doit être de 44 caractères", 44, hash.length());
     }
 
     @Test

@@ -1,5 +1,7 @@
 package com.iut.banque.modele;
 
+import com.iut.banque.controller.HashMotDePasse;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -170,9 +172,18 @@ public abstract class Utilisateur implements Serializable {
 	 * 
 	 * @param nouveauMotDePasse
 	 *            : le nouveau mot de passe (sera hashé)
+	 * @throws RuntimeException
+	 *             si une erreur survient lors du hachage du mot de passe
 	 */
 	public void changerMotDePasse(String nouveauMotDePasse) {
-		this.userPwd = nouveauMotDePasse;
+	    // Utiliser HashMotDePasse pour générer un nouveau sel et hacher le mot de passe
+	    HashMotDePasse hashMotDePasse = new HashMotDePasse();
+	    try {
+	        HashMotDePasse.HashResult hashResult = hashMotDePasse.hashPassword(nouveauMotDePasse);
+	        setHashedPassword(hashResult.saltBase64, hashResult.hashBase64);
+	    } catch (Exception e) {
+	        throw new RuntimeException("Erreur lors du hachage du mot de passe", e);
+	    }
 	}
 
 	/**

@@ -158,6 +158,14 @@ public class CreerUtilisateur extends ActionSupport {
 				.getRequiredWebApplicationContext(ServletActionContext.getServletContext());
 		this.banque = (BanqueFacade) context.getBean("banqueFacade");
 	}
+	
+	/**
+	 * Constructeur pour les tests unitaires
+	 * @param banque La façade à utiliser
+	 */
+	public CreerUtilisateur(BanqueFacade banque) {
+		this.banque = banque;
+	}
 
 	/**
 	 * Renvoie Le message à afficher si la création d'un utilisateur vient

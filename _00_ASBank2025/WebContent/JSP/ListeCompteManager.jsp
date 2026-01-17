@@ -92,7 +92,7 @@
 								</s:url>
 								<td><s:a href="%{editAccount}">
 										<img
-											src="http://freeflaticons.com/wp-content/uploads/2014/10/write-copy-14138051958gn4k.png"
+											src="https://cdn1.iconfinder.com/data/icons/feather-2/24/edit-128.png"
 											style="width: 20px; height: 20px" alt="Editer ce compte"
 											title="Editer ce compte" />
 									</s:a></td>

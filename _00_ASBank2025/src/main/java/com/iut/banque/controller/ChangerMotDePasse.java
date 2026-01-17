@@ -7,6 +7,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import com.opensymphony.xwork2.ActionSupport;
 import com.iut.banque.facade.BanqueFacade;
 import com.iut.banque.modele.Utilisateur;
+import com.iut.banque.modele.Gestionnaire;
 
 import java.util.logging.Logger;
 
@@ -109,19 +110,31 @@ public class ChangerMotDePasse extends ActionSupport {
 		// - Vérifier l'ancien mot de passe (avec gestion du hash)
 		// - Hasher le nouveau mot de passe
 		// - Mettre à jour la base de données
-		try {
-			if (banque == null) {
-				message = "Impossible de changer le mot de passe : service indisponible.";
-				return ERREUR;
-			}
-			banque.changerMotDePasse(ancienMotDePasse, nouveauMotDePasse);
-			message = "Votre mot de passe a été modifié avec succès.";
-			return "SUCCESS";
+			try {
+				if (banque == null) {
+					message = "Impossible de changer le mot de passe : service indisponible.";
+					return ERREUR;
+				}
+				banque.changerMotDePasse(ancienMotDePasse, nouveauMotDePasse);
+				message = "Votre mot de passe a été modifié avec succès.";
+				
+				// Vérifier si l'utilisateur est un gestionnaire
+				Utilisateur utilisateur = banque.getConnectedUser();
+				if (utilisateur instanceof Gestionnaire) {
+					return "SUCCESSMANAGER";
+				}
+				return "SUCCESS";
 		} catch (com.iut.banque.exceptions.TechnicalException e) {
 			message = e.getMessage();
 			return ERREUR;
 		} catch (Exception e) {
-			e.printStackTrace();
+			// Log l'exception complète pour le diagnostic, et retourne un message plus explicite
+			LOGGER.severe("Erreur lors du changement de mot de passe : " + e.getMessage());
+			// Inclure la cause si disponible
+			if (e.getCause() != null) {
+				LOGGER.severe("Cause: " + e.getCause());
+			}
+			// Conserver le message générique attendu par les tests/UI
 			message = "Une erreur est survenue lors du changement de mot de passe.";
 			return ERREUR;
 		}

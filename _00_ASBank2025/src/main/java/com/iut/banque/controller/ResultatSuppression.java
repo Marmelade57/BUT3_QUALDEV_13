@@ -2,11 +2,26 @@ package com.iut.banque.controller;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import com.iut.banque.facade.BanqueFacade;
 import com.iut.banque.modele.Client;
 import com.iut.banque.modele.Compte;
 
 
 public class ResultatSuppression extends ActionSupport {
+	/**
+	 * Constructeur par défaut
+	 */
+	public ResultatSuppression() {
+		super();
+	}
+
+	/**
+	 * Constructeur avec BanqueFacade (pour rétrocompatibilité avec les tests)
+	 * @param facade la façade de la banque
+	 */
+	public ResultatSuppression(BanqueFacade facade) {
+		this();
+	}
 	private Compte compte;
 	private Client client;
 	private String compteInfo;
@@ -14,6 +29,9 @@ public class ResultatSuppression extends ActionSupport {
 	private boolean error;
 	private String errorMessage;
 	private boolean isAccount;
+	private String message;
+	private boolean result;
+	private String compteId;
 
 	/**
 	 * @return the isAccount
@@ -95,6 +113,48 @@ public class ResultatSuppression extends ActionSupport {
 	 */
 	public String getErrorMessage() {
 		return errorMessage;
+	}
+
+	/**
+	 * @return the message
+	 */
+	public String getMessage() {
+		return message;
+	}
+
+	/**
+	 * @param message the message to set
+	 */
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	/**
+	 * @return the result
+	 */
+	public boolean isResult() {
+		return result;
+	}
+
+	/**
+	 * @param result the result to set
+	 */
+	public void setResult(boolean result) {
+		this.result = result;
+	}
+
+	/**
+	 * @return the compteId
+	 */
+	public String getCompteId() {
+		return compteId;
+	}
+
+	/**
+	 * @param compteId the compteId to set
+	 */
+	public void setCompteId(String compteId) {
+		this.compteId = compteId;
 	}
 
 	/**

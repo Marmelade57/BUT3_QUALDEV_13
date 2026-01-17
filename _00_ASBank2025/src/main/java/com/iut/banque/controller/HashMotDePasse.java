@@ -48,10 +48,9 @@ public class HashMotDePasse {
      */
     protected byte[] computeHash(String motDePasse, byte[] salt) throws TechnicalException {
         try {
-            KeySpec spec = new PBEKeySpec(motDePasse.toCharArray(), salt, 65536, 128);
-            // Note: PBKDF2WithHmacSHA1 est utilisé pour compatibilité avec l'existant
-            // Pour améliorer la sécurité, considérer PBKDF2WithHmacSHA256
-            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            // Utiliser PBKDF2WithHmacSHA256 avec 100000 itérations et une clé de 256 bits
+            KeySpec spec = new PBEKeySpec(motDePasse.toCharArray(), salt, 100000, 256);
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
             return factory.generateSecret(spec).getEncoded();
         } catch (Exception e) {
             throw new TechnicalException("Erreur lors du hashage du mot de passe", e);

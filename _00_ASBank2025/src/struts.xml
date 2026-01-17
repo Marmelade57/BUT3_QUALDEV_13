@@ -66,7 +66,7 @@
 		
 		<action name="loginUser" class="com.iut.banque.controller.Connect" method="login">
 			<result name="SUCCESS" type="redirectAction">
-				<param name="actionName">retourTableauDeBordManager</param>
+				<param name="actionName">retourTableauDeBordClient</param>
 			</result>
 			<result name="SUCCESSMANAGER" type="redirectAction">
 				<param name="actionName">retourTableauDeBordManager</param>
@@ -178,6 +178,21 @@
 		</action>
 
 		
+		<!-- Gestion du changement de mot de passe -->
+		<action name="urlChangerMotDePasse">
+			<result>/JSP/ChangerMotDePasse.jsp</result>
+		</action>
+
+		<action name="changerMotDePasseAction" class="com.iut.banque.controller.ChangerMotDePasse" method="changerMotDePasse">
+			<result name="SUCCESS" type="redirectAction">
+				<param name="actionName">retourTableauDeBordClient</param>
+			</result>
+			<result name="SUCCESSMANAGER" type="redirectAction">
+				<param name="actionName">retourTableauDeBordManager</param>
+			</result>
+			<result name="ERROR">/JSP/ChangerMotDePasse.jsp</result>
+		</action>
+
 		<!-- Création de compte -->
 		<action name="addAccount" class="com.iut.banque.controller.CreerCompte"
 			method="creationCompte">

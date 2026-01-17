@@ -179,7 +179,8 @@ public class DaoHibernate implements IDao {
 
     @Override
     public void updateUser(Utilisateur u) {
-        sessionFactory.getCurrentSession().update(u);
+        // Utiliser merge plutôt que update pour supporter les entités détachées
+        sessionFactory.getCurrentSession().merge(u);
     }
 
     @Override

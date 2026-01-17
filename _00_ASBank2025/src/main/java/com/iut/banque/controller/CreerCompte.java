@@ -88,6 +88,11 @@ public class CreerCompte extends ActionSupport {
 		this.banque = (BanqueFacade) context.getBean("banqueFacade");
 	}
 
+	/** Constructeur alternatif pour tests */
+    public CreerCompte(BanqueFacade banque) {
+        this.banque = banque;
+    }
+
 	/**
 	 * @return the numeroCompte
 	 */
@@ -190,7 +195,7 @@ public class CreerCompte extends ActionSupport {
 	 * 
 	 * @return une chaine déterminant le résultat de l'action
 	 */
-    public String creationCompte() {
+public String creationCompte() {
         try {
             if (avecDecouvert) {
                 banque.createAccount(numeroCompte, client, decouvertAutorise);
@@ -208,6 +213,51 @@ public class CreerCompte extends ActionSupport {
             return "NONUNIQUEID";
         } catch (IllegalFormatException e) {
             return "INVALIDFORMAT";
+        } catch (RuntimeException re) {
+            // Dépouiller la cause si l'exception est wrapée
+            Throwable cause = re.getCause();
+            while (cause != null) {
+                if (cause instanceof IllegalOperationException) {
+                    return "ILLEGALOPERATION";
+                } else if (cause instanceof TechnicalException) {
+                    return "NONUNIQUEID";
+                } else if (cause instanceof IllegalFormatException) {
+                    return "INVALIDFORMAT";
+                }
+                cause = cause.getCause();
+            }
+            // Sinon, comportement par défaut
+            return "ERROR";
+        } catch (Exception e) {
+            // Cas générique : si l'exception contient une cause connue, traiter également
+            Throwable cause = e.getCause();
+            while (cause != null) {
+                if (cause instanceof IllegalOperationException) {
+                    return "ILLEGALOPERATION";
+                } else if (cause instanceof TechnicalException) {
+                    return "NONUNIQUEID";
+                } else if (cause instanceof IllegalFormatException) {
+                    return "INVALIDFORMAT";
+                }
+                cause = cause.getCause();
+            }
+            e.printStackTrace();
+            return "ERROR";
+        } catch (Throwable t) {
+            // Cas très générique : dépouiller toute cause possible (ex: exceptions wrapées par Mockito)
+            Throwable cause = t.getCause();
+            while (cause != null) {
+                if (cause instanceof IllegalOperationException) {
+                    return "ILLEGALOPERATION";
+                } else if (cause instanceof TechnicalException) {
+                    return "NONUNIQUEID";
+                } else if (cause instanceof IllegalFormatException) {
+                    return "INVALIDFORMAT";
+                }
+                cause = cause.getCause();
+            }
+            t.printStackTrace();
+            return "ERROR";
         }
     }
 

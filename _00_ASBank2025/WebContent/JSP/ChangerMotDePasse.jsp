@@ -38,13 +38,12 @@
 	<p>
 		<s:if test="connectedUser instanceof com.iut.banque.modele.Gestionnaire">
 			<s:url action="retourTableauDeBordManager" var="urlRetour" />
-		</s:if>
 		<s:else>
 			<s:url action="retourTableauDeBordClient" var="urlRetour" />
 		</s:else>
+		</s:if>
 		<s:a href="%{urlRetour}">Retour au tableau de bord</s:a>
 	</p>
 </body>
 <jsp:include page="/JSP/Footer.jsp" />
 </html>
-

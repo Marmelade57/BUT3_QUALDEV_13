@@ -37,6 +37,11 @@ public class DetailCompte extends ActionSupport {
         this.banque = (BanqueFacade) context.getBean("banqueFacade");
     }
 
+    /** Constructeur alternatif pour tests */
+    public DetailCompte(BanqueFacade banque) {
+        this.banque = banque;
+    }
+
     public String getError() {
         switch (error) {
             case "TECHNICAL":
@@ -86,32 +91,55 @@ public class DetailCompte extends ActionSupport {
 
     // ✅ Méthode factorisée pour éviter la duplication
     private String processOperation(boolean isDebit) {
-        Compte currentCompte = getCompte();
-        try {
-            double value = Double.parseDouble(montant.trim());
-            if (isDebit) {
-                banque.debiter(currentCompte, value);
-            } else {
-                banque.crediter(currentCompte, value);
-            }
-            return "SUCCESS";
-        } catch (NumberFormatException e) {
-            LOGGER.error("Invalid number format", e);
-            return "ERROR";
-        } catch (InsufficientFundsException ife) {
-            LOGGER.warn("Insufficient funds", ife);
-            return "NOTENOUGHFUNDS";
-        } catch (IllegalFormatException e) {
-            LOGGER.warn("Negative amount", e);
-            return NEGATIVE_AMOUNT;
-        }
+    Compte currentCompte = getCompte();
+    if (currentCompte == null) {
+        LOGGER.error("Le compte est null");
+        return "ERROR";
     }
+    
+    try {
+        double value = Double.parseDouble(montant.trim());
+        // Recharger le compte depuis la base de données pour s'assurer d'avoir la dernière version
+        currentCompte = banque.getCompte(currentCompte.getNumeroCompte());
+        
+        if (isDebit) {
+            banque.debiter(currentCompte, value);
+        } else {
+            banque.crediter(currentCompte, value);
+        }
+        return "SUCCESS";
+    } catch (NumberFormatException e) {
+        LOGGER.error("Format de montant invalide", e);
+        return "ERROR";
+    } catch (InsufficientFundsException ife) {
+        LOGGER.warn("Fonds insuffisants", ife);
+        return "NOTENOUGHFUNDS";
+    } catch (IllegalFormatException e) {
+        LOGGER.warn("Montant négatif", e);
+        return NEGATIVE_AMOUNT;
+    } catch (Exception e) {
+        LOGGER.error("Erreur inattendue", e);
+        return "ERROR";
+    }
+}
 
     public String debit() {
-        return processOperation(true);
+        LOGGER.info("=== DÉBUT MÉTHODE debit() ===");
+        LOGGER.info("Compte avant débit: " + (compte != null ? compte.getNumeroCompte() : "null"));
+        LOGGER.info("Montant à débiter: " + montant);
+        String result = processOperation(true);
+        LOGGER.info("Résultat du débit: " + result);
+        LOGGER.info("=== FIN MÉTHODE debit() ===");
+        return result;
     }
 
     public String credit() {
-        return processOperation(false);
+        LOGGER.info("=== DÉBUT MÉTHODE credit() ===");
+        LOGGER.info("Compte avant crédit: " + (compte != null ? compte.getNumeroCompte() : "null"));
+        LOGGER.info("Montant à créditer: " + montant);
+        String result = processOperation(false);
+        LOGGER.info("Résultat du crédit: " + result);
+        LOGGER.info("=== FIN MÉTHODE credit() ===");
+        return result;
     }
 }

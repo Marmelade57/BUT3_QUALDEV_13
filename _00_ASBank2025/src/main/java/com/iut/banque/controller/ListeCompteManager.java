@@ -40,6 +40,11 @@ public class ListeCompteManager extends ActionSupport {
 
 	}
 
+	/** Constructeur alternatif utilisé pour les tests */
+    public ListeCompteManager(BanqueFacade banque) {
+        this.banque = banque;
+    }
+
 	/**
 	 * Méthode qui va renvoer la liste de tous les clients sous forme de hashmap
 	 * 

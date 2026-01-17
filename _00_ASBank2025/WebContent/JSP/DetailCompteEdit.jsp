@@ -49,13 +49,18 @@
 		</s:if>
 		<br />
 	</p>
-	<s:form name="formOperation" action="creditActionEdit" method="post">
-		<s:textfield label="Montant" name="montant" />
-		<input type="hidden" name="compte"
-			value="<s:property value='compte.numeroCompte' />">
-		<s:submit value="Crediter" />
-		<s:submit value="Debiter" action="debitActionEdit" />
+	<s:form name="formOperation" method="post" id="operationForm">
+		<s:textfield label="Montant" name="montant" id="montant" />
+		<s:hidden name="compte" value="%{compte.numeroCompte}" id="compteId" />
+		<s:submit value="Crediter" action="creditActionEdit" onclick="setAction('creditActionEdit')" />
+		<s:submit value="Debiter" action="debitActionEdit" onclick="setAction('debitActionEdit')" />
 	</s:form>
+
+	<script type="text/javascript">
+		function setAction(action) {
+			document.getElementById('operationForm').action = action;
+		}
+	</script>
 
 	<s:if test="%{compte.className == \"CompteAvecDecouvert\"}">
 		<s:form name="formChangeDecouvertAutorise"

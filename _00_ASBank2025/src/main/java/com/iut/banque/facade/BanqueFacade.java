@@ -97,6 +97,22 @@ public class BanqueFacade implements Serializable {
 	 * @return Map<String,Client> : la hashmap correspondant au résultat de la
 	 *         demande
 	 */
+	/**
+	 * Récupère un compte par son identifiant
+	 * 
+	 * @param id l'identifiant du compte
+	 * @return le compte correspondant à l'identifiant, ou null si non trouvé
+	 */
+	public Compte getAccountById(String id) {
+		return banqueManager.getAccountById(id);
+	}
+
+	/**
+	 * Méthode pour récupérer une HashMap avec tous les clients
+	 * 
+	 * @return Map<String,Client> : la hashmap correspondant au résultat de la
+	 *         demande
+	 */
 	public Map<String, Client> getAllClients() {
 		return banqueManager.getAllClients();
 	}

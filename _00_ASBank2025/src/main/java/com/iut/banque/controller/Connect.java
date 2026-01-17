@@ -38,6 +38,16 @@ public class Connect extends ActionSupport {
 	}
 
 	/**
+	 * Constructeur alternatif utilisé pour les tests : permet d'injecter une
+	 * BanqueFacade sans accéder au contexte web.
+	 *
+	 * @param banque la facade à utiliser
+	 */
+	public Connect(BanqueFacade banque) {
+		this.banque = banque;
+	}
+
+	/**
 	 * Méthode pour vérifier la connexion de l'utilisateur basé sur les
 	 * paramêtres userCde et userPwd de cette classe
 	 * 
