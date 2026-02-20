@@ -90,6 +90,9 @@
                     <excludes>
                         <exclude>**/apache-tomcat-*/**</exclude>
                         <exclude>**/*IT*.java</exclude>
+                        <!-- Tests Selenium exclus des tests unitaires : ils requièrent un serveur Tomcat actif -->
+                        <exclude>**/selenium/**/*.java</exclude>
+                        <exclude>**/*Selenium*.java</exclude>
                     </excludes>
                     <argLine>
                         --add-opens java.base/java.lang=ALL-UNNAMED 
@@ -107,7 +110,7 @@
                         --add-opens java.base/java.util.concurrent.atomic=ALL-UNNAMED 
                         --add-opens java.base/java.util.stream=ALL-UNNAMED 
                         --add-opens java.sql/java.sql=ALL-UNNAMED
-                        ${surefire.argLine}
+                        @{surefire.argLine}
                     </argLine>
                     <useSystemClassLoader>false</useSystemClassLoader>
                     <forkCount>1</forkCount>
