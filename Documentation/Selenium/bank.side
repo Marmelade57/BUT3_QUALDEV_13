@@ -1,0 +1,119 @@
+{
+  "id": "ea303ee2-b1c6-4469-b785-22cea93892fb",
+  "version": "2.0",
+  "name": "bank",
+  "url": "http://localhost:8080",
+  "tests": [{
+    "id": "84ec1a70-94ac-4ba9-a88a-f15858537816",
+    "name": "Login echec",
+    "commands": [{
+      "id": "ee517968-cca7-4b4b-b362-d3f5bdfdb410",
+      "comment": "",
+      "command": "open",
+      "target": "/_00_ASBank2025_war/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9bbaa4d7-33cd-44f8-b47f-26480e4e50c9",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1550x830",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "1fb4f673-3705-4c03-8604-539562291983",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Page de Login",
+      "targets": [
+        ["linkText=Page de Login", "linkText"],
+        ["css=.bouton", "css:finder"],
+        ["xpath=//a[contains(text(),'Page de Login')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/_00_ASBank2025_war//JSP/redirectionLogin.action')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Page de Login')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "09c2a31e-28e8-455c-9b69-c73ffe3f27cc",
+      "comment": "",
+      "command": "click",
+      "target": "id=loginUser_userCde",
+      "targets": [
+        ["id=loginUser_userCde", "id"],
+        ["name=userCde", "name"],
+        ["css=#loginUser_userCde", "css:finder"],
+        ["xpath=//input[@id='loginUser_userCde']", "xpath:attributes"],
+        ["xpath=//form[@id='loginUser']/table/tbody/tr/td[2]/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "18ea5274-9f30-48bb-9dcd-99e343a00869",
+      "comment": "",
+      "command": "type",
+      "target": "id=loginUser_userCde",
+      "targets": [
+        ["id=loginUser_userCde", "id"],
+        ["name=userCde", "name"],
+        ["css=#loginUser_userCde", "css:finder"],
+        ["xpath=//input[@id='loginUser_userCde']", "xpath:attributes"],
+        ["xpath=//form[@id='loginUser']/table/tbody/tr/td[2]/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "client1"
+    }, {
+      "id": "560a9b70-70db-4c59-a69d-78462816ad76",
+      "comment": "",
+      "command": "click",
+      "target": "id=loginUser_userPwd",
+      "targets": [
+        ["id=loginUser_userPwd", "id"],
+        ["name=userPwd", "name"],
+        ["css=#loginUser_userPwd", "css:finder"],
+        ["xpath=//input[@id='loginUser_userPwd']", "xpath:attributes"],
+        ["xpath=//form[@id='loginUser']/table/tbody/tr[2]/td[2]/input", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8e114dd8-0ec7-4d9d-ac76-11ef4b5cca0f",
+      "comment": "",
+      "command": "type",
+      "target": "id=loginUser_userPwd",
+      "targets": [
+        ["id=loginUser_userPwd", "id"],
+        ["name=userPwd", "name"],
+        ["css=#loginUser_userPwd", "css:finder"],
+        ["xpath=//input[@id='loginUser_userPwd']", "xpath:attributes"],
+        ["xpath=//form[@id='loginUser']/table/tbody/tr[2]/td[2]/input", "xpath:idRelative"],
+        ["xpath=//tr[2]/td[2]/input", "xpath:position"]
+      ],
+      "value": "client1"
+    }, {
+      "id": "1d934e09-919f-4057-91dc-8a72b3172377",
+      "comment": "",
+      "command": "click",
+      "target": "id=loginUser_submit",
+      "targets": [
+        ["id=loginUser_submit", "id"],
+        ["name=submit", "name"],
+        ["css=#loginUser_submit", "css:finder"],
+        ["xpath=//input[@id='loginUser_submit']", "xpath:attributes"],
+        ["xpath=//form[@id='loginUser']/table/tbody/tr[3]/td/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "3b83ff05-5c5f-47f4-8b84-47b93d8b04a5",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["84ec1a70-94ac-4ba9-a88a-f15858537816"]
+  }],
+  "urls": ["http://localhost:8080/"],
+  "plugins": []
+}
