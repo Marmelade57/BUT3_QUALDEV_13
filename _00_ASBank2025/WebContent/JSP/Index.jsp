@@ -20,8 +20,8 @@
 	<h1>Bienvenue sur l'application IUT Bank 2025</h1>
 	<p>
 		<img
-			src="https://iut-metz.univ-lorraine.fr/sites/default/files/logo-iut-metz.png"
-			alt="logo" style="background-color: #173B6C" />
+			src="https://www.mio.osupytheas.fr/wp-content/uploads/2026/01/unys-universite-de-lorraine.png.webp"
+			alt="logo unys" style="background-color: white" />
 	</p>
 	<input type="button" value="Information" name="info"
 		onClick="DisplayMessage()" />
